@@ -1,2 +1,7 @@
+# General
 a.out
 *.o
+
+# Module 00
+megaphone
+phonebook

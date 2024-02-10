@@ -1,9 +1,6 @@
 #include "Contact.hpp"
 #include "Phonebook.hpp"
 
-#include <iostream>
-#include <string> // For std::string
-
 int main()
 {
 	Phonebook phonebook;

@@ -5,18 +5,13 @@ void printRow(const std::string& col1, const std::string& col2, const std::strin
 
 void Phonebook::addContact(const Contact& contact) {
 	if (currentSize < 8) {
-		// The phonebook hasn't reached its maximum capacity yet.
-		// Directly add the new contact at the current size index.
 		contacts[currentSize] = contact;
 		contacts[currentSize].setIndex(currentSize);
-		currentSize++; // Increment the count of contacts.
+		currentSize++;
 	} else {
-		// The phonebook is full, so we start replacing contacts from the oldest one.
-		// 'startIndex' indicates the index of the oldest contact.
+		// The phonebook is full, start replacing contacts from the oldest one
 		contacts[startIndex] = contact;
 		contacts[startIndex].setIndex(startIndex);
-
-		// Move 'startIndex' to the next oldest contact.
 		startIndex = (startIndex + 1) % 8;
 	}
 

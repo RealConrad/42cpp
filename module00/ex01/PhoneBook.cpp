@@ -3,6 +3,11 @@
 std::string formatCell(const std::string& text);
 void printRow(const std::string& col1, const std::string& col2, const std::string& col3, const std::string& col4);
 
+/**
+ * @brief Adds a contact to the array stored in the Phonebook class. If the max amount of contacts
+ * are reached, start replacing the oldest one in the array.
+ * @param contact The contact to add. 
+ */
 void Phonebook::addContact(const Contact& contact) {
 	if (currentSize < 8) {
 		contacts[currentSize] = contact;
@@ -24,6 +29,10 @@ void Phonebook::addContact(const Contact& contact) {
 
 /* -------------------------------- Searching ------------------------------- */
 
+/**
+ * @brief Searchs for a contact. Prompts the user if they want to search all the contacts or
+ * a specific contact by index.  
+ */
 void Phonebook::search(void) {
 	std::string userInput;
 	Contact contact;
@@ -41,6 +50,9 @@ void Phonebook::search(void) {
 		std::cout << "Invalid input or index. Try again." << std::endl;
 }
 
+/**
+ * @brief Displays all the stored conatcts formatted.
+ */
 void Phonebook::displayContacts(void) {
 	if (currentSize > 0)
 	{
@@ -55,6 +67,13 @@ void Phonebook::displayContacts(void) {
 		std::cout << "No contacts have been added yet!" << std::endl;
 }
 
+/**
+ * @brief Checks if the given index is valid or not.
+ * @param idx The index to check for.
+ * @param contact A pointer to a contact variable. If the index exists,
+ * assign the contact to the conact at the index
+ * @return True if the index exists otherwise false. 
+ */
 bool Phonebook::isValidIndex(const std::string& idx, Contact& contact)
 {
 	int index = std::atoi(idx.c_str());
@@ -71,6 +90,14 @@ bool Phonebook::isValidIndex(const std::string& idx, Contact& contact)
 
 /* -------------------------------- Printing -------------------------------- */
 
+
+/**
+ * @brief Prints a given row, formatted correctly.
+ * @param col1 First column text
+ * @param col2 Second column text
+ * @param col3 Third column text
+ * @param col4 Forth column text
+ */
 void printRow(const std::string& col1, const std::string& col2, const std::string& col3, const std::string& col4) {
 	std::cout << std::right
 			  << std::setw(10) << formatCell(col1) << "|"
@@ -80,6 +107,11 @@ void printRow(const std::string& col1, const std::string& col2, const std::strin
 			  << std::endl;
 }
 
+/**
+ * @brief Formats the given `text` and checks if it should be truncated or not.
+ * @param text The text to possibly truncate
+ * @return The formated text.
+ */
 std::string formatCell(const std::string& text) {
 	if (text.length() > 9)
 		return (text.substr(0,9) + ".");
@@ -87,6 +119,9 @@ std::string formatCell(const std::string& text) {
 		return (text);
 }
 
+/**
+ * @brief Initialize some values and basic user instructions 
+ */
 void Phonebook::startMessage(void) {
 	currentSize = 0;
 	startIndex = 0;

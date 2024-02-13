@@ -18,7 +18,6 @@ class Phonebook {
 		void displayContacts(void);
 		void search(void);
 		void startMessage(void);
-		bool isValidIndex(const std::string& idx, Contact& contact);
 };
 
 #endif

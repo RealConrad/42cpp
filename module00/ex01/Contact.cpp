@@ -34,13 +34,15 @@ void Contact::displayContact(void) {
 
 /* ---------------------------- Setter functions ---------------------------- */
 void Contact::setIndex(int idx) {
-	index = idx;
+	std::ostringstream oss;
+	oss << idx;
+	this->index = oss.str();
 }
 
 /* ---------------------------- Getter functions ---------------------------- */
 
 std::string Contact::getIndex(void) {
-	return (std::to_string(index));
+	return (this->index);
 }
 
 std::string Contact::getFirstName(void) {

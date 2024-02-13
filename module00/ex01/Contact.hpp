@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
 
 class Contact {
 	private:
@@ -11,7 +12,7 @@ class Contact {
 		std::string nickname;
 		std::string darkestSecret;
 		std::string	phoneNumber;
-		int			index;
+		std::string	index;
 
 	public:
 		void inputContactDetails(void);

@@ -35,19 +35,22 @@ void Phonebook::addContact(const Contact& contact) {
  */
 void Phonebook::search(void) {
 	std::string userInput;
-	Contact contact;
 
 	std::cout << "Type \"ALL\" to view all contacts or an index number: ";
 	std::getline(std::cin, userInput);
 	if (userInput.compare("ALL") == 0) {
 		printRow("Index", "First Name", "Last Name", "Nickname");
 		displayContacts();
+		return ;
 	}
-	else if (isValidIndex(userInput, contact)) {
-		contact.displayContact();
+	for (int i = 0; i < currentSize; i++) {
+		if (this->contacts[i].getIndex().compare(userInput) == 0)
+		{
+			this->contacts[i].displayContact();
+			return ;
+		}
 	}
-	else
-		std::cout << "Invalid input or index. Try again." << std::endl;
+	std::cout << "Invalid input or index. Try again." << std::endl;
 }
 
 /**
@@ -67,29 +70,7 @@ void Phonebook::displayContacts(void) {
 		std::cout << "No contacts have been added yet!" << std::endl;
 }
 
-/**
- * @brief Checks if the given index is valid or not.
- * @param idx The index to check for.
- * @param contact A pointer to a contact variable. If the index exists,
- * assign the contact to the conact at the index
- * @return True if the index exists otherwise false. 
- */
-bool Phonebook::isValidIndex(const std::string& idx, Contact& contact)
-{
-	int index = std::atoi(idx.c_str());
-	
-	for (int i = 0; i < currentSize; i++) {
-		if (std::atoi(contacts[i].getIndex().c_str()) == index)
-		{
-			contact = contacts[i];
-			return (true);
-		}
-	}
-	return (false);
-}
-
 /* -------------------------------- Printing -------------------------------- */
-
 
 /**
  * @brief Prints a given row, formatted correctly.

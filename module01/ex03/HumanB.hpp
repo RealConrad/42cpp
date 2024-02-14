@@ -7,10 +7,10 @@
 
 class HumanB {
 	private:
-		Weapon *weapon; // Make it pointer as HumanB doesn't always have a weapon
 		std::string name;
+		Weapon *weapon; // Make it pointer as HumanB doesn't always have a weapon
 	public:
-		HumanB();
+		HumanB(std::string name);
 		void attack(void);
 		void setName(const std::string& name);
 		void setWeapon(Weapon& weapon);

@@ -13,7 +13,7 @@ class ClapTrap {
 	public:
 		ClapTrap(std::string name);
 		~ClapTrap();
-		ClapTrap(ClapTrap &copy); // copy constructor
+		ClapTrap(const ClapTrap &copy); // copy constructor
 		ClapTrap &operator=(const ClapTrap& rhs); // copy assignment constructor
 
 		void attack(const std::string& target);

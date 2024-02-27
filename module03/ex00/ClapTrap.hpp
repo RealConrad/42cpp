@@ -14,7 +14,7 @@ class ClapTrap {
 		ClapTrap(std::string name);
 		~ClapTrap();
 		ClapTrap(const ClapTrap &copy); // copy constructor
-		ClapTrap &operator=(const ClapTrap& rhs); // copy assignment constructor
+		ClapTrap &operator=(const ClapTrap& copy); // copy assignment constructor
 
 		void attack(const std::string& target);
 		void takeDamage(unsigned int amount);

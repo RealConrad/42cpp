@@ -1,5 +1,3 @@
-Currently a work in progress!!
-
 <div align="center">
   <h1>
     📗 CPP
@@ -28,7 +26,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 
 ## Concepts
 - [Classes, Member functions and other basics (Module00)](#classes-member-functions-and-other-basics-module00)
-- [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-references)
+- [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-and-references-module01)
 
 ## Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -53,7 +51,100 @@ class MyClass {
 };
 ```
 
-## Memory allocation, pointers to members, references (Module01)
+## Memory allocation, pointers to members and references (Module01)
+### Memory allocation
+In C++ you allocate memory using the `new` keyword and free/cleanup using the `delete` keyword.
+```cpp
+#include <iostream>
+
+int main() {
+    // Dynamically allocate memory for a single integer
+    int* ptr = new int;
+    
+    // Assign a value to the allocated memory
+    *ptr = 10;
+    std::cout << "Value of dynamically allocated integer: " << *ptr << std::endl;
+    
+    // Deallocate the memory
+    delete ptr;
+    return 0;
+}
+```
+
+Allocating an array
+```cpp
+#include <iostream>
+
+int main() {
+    // Dynamically allocate memory for an array of 5 integers
+    int* arr = new int[5];
+    
+    // Assign values to the array
+    for (int i = 0; i < 5; ++i) {
+        arr[i] = i * 2; // Initialize elements with even numbers
+    }
+    
+    // Print the values
+    std::cout << "Values in dynamically allocated array: ";
+    for(int i = 0; i < 5; ++i) {
+        std::cout << arr[i] << " ";
+    }
+    std::cout << std::endl;
+    
+    // Deallocate the memory allocated for the array
+    delete[] arr;
+    return 0;
+}
+
+```
+
+### Pointers vs Reference
+- **Pointers:**
+  - **What is it:** A pointer is a variable that holds the memory address of another variable. 
+  - **Syntax:** `dataType* pointerName = &variable`
+  - **Nullability:** Can be `NULL` (can also be `nullptr` in C++11).
+  - **Reassignment:** Can be reassignedd to point to another object
+  - **Usage:** Dynamic memeory allocation (new/delete), optional function parameters, more complex data structures (e.g. linked lists)
+
+- **References:**
+  - **What is it:** A reference acts as an "alias" for another variable. When you declare a reference to a variable, you are essentially creating a second name that refers to the original variable. Any operations performed on the reference affect the original variable directly because both the reference and the original variable refer to the same memory location.
+  - **Syntax:** `dataType& refName = variable`
+  - **Nullability:** Cannot be null.
+  - **Reassignment:** Cannot be changed to refer to another variable after initialization.
+  - **Usage:**
+    - Passing objects to functions when you want to avoid copying the object but still want to modify the original object.
+    - Returning multiple values from a function through references.
+    - Implementing operator overloads in classes.
+
+### When to use each one?
+Use pointers when you need the same variable to point to multiple objects or no objects at all, manage memory dynamically or implement complex data types. \
+You typically use references when you want a simpler, more readable syntax or when you need an alias for an exisiting variable. It is also more efficient to pass a reference to a function to avoid unnessary copying.
+
+### Example
+```cpp
+#include <iostream>
+
+int main() {
+    int number = 10; // Original variable
+
+    // Pointer to number
+    int* ptr = &number;
+    *ptr = 20; // Modifying number through the pointer
+    std::cout << "After modification through pointer: " << number << std::endl;
+
+    // Reference to number
+    int& ref = number;
+    ref = 30; // Modifying number through the reference
+    std::cout << "After modification through reference: " << number << std::endl;
+
+    return 0;
+}
+
+Output:
+After modification through pointer: 20
+After modification through reference: 30
+```
+
 
 
 

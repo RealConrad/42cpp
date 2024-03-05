@@ -28,7 +28,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 
 ## Concepts
 - [Classes, Member functions and other basics (Module00)](#classes-member-functions-and-other-basics-module00)
-- [](#)
+- [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-references)
 
 ## Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -49,9 +49,12 @@ class MyClass {
     public:
         MyClass(); // constructor
         ~MyClass(); // deconstructor
-        void myFunction();
+        void myFunction(); // Member function
 };
 ```
+
+## Memory allocation, pointers to members, references (Module01)
+
 
 
 ### Polymorphism, abstract classes, interfaces (Module04)

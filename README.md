@@ -65,7 +65,7 @@ int main() {
     *ptr = 10;
     std::cout << "Value of dynamically allocated integer: " << *ptr << std::endl;
     
-    // Deallocate the memory
+    // Free memory
     delete ptr;
     return 0;
 }
@@ -91,7 +91,7 @@ int main() {
     }
     std::cout << std::endl;
     
-    // Deallocate the memory allocated for the array
+    // Free memory
     delete[] arr;
     return 0;
 }

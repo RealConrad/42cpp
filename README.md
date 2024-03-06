@@ -109,7 +109,7 @@ int main() {
   - **Usage:** Dynamic memeory allocation (new/delete), optional function parameters, more complex data structures (e.g. linked lists)
 
 **References:**
-  - **What is it:** A reference acts as an "alias" for another variable. When you declare a reference to a variable, you are essentially creating a second name that refers to the original variable. Any operations performed on the reference affect the original variable directly because both the reference and the original variable refer to the same memory location.
+  - **What is it:** A reference acts as an "alias" for another variable. When you declare a reference to a variable, you are essentially creating a another variable that refers to the original variable. Any operations performed on the reference affect the original variable directly because both the reference and the original variable refer to the same memory location.
   - **Syntax:** `dataType& refName = variable`
   - **Nullability:** Cannot be `NULL`.
   - **Reassignment:** Cannot be changed to refer to another variable after initialization.

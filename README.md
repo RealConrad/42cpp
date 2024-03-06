@@ -28,7 +28,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Classes, Member functions and other basics (Module00)](#classes-member-functions-and-other-basics-module00)
 - [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-and-references-module01)
 - TBD (Module02)
-- [Inheritence (Module03)](#inheritence-module03)
+- [Inheritance (Module03)](#inheritance-module03)
 
 ## Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -155,7 +155,7 @@ Some key aspects/benefits of inheritance:
 - **Polymorphism:** A derived class can override functions of its base class.
 - **Encapsulation:** Supports the encapsulation principle by allowing derived classes to access/modify data/behaviour of their base class while keeping certain attributes private/protected from outside access.
 
-The types of inheritence:
+The types of inheritance:
 - **Single inheritance:** A derived class inherits from one base class.
 - **Multiple inheritance:** A derived class inherits from multiple base classes.
 - **Multilevel inheritance:** A class is derived from a class which is also derived from another class.

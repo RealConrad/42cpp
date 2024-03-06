@@ -27,7 +27,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 ## Concepts
 - [Classes, Member functions and other basics (Module00)](#classes-member-functions-and-other-basics-module00)
 - [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-and-references-module01)
-- TBD (Module02)
+- [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
 
 ## Classes, Member functions and other basics (Module00)
@@ -146,6 +146,55 @@ Output:
 After modification through pointer: 20
 After modification through reference: 30
 ```
+
+## Operator overloading and Orthodox Canonical class form (Module02)
+
+#### Operator overloading
+Allows developers to redefine the way operators (e.g. `+, -, \, *, =, == etc..` work with classes.
+
+You can define an operator overloading: `MyClassName operator<operator-to-overload>()`.
+
+Example:
+```cpp
+#include <iostream>
+
+class Complex {
+  private:
+      int a;
+      int b;
+  public:
+      Complex(int r = 0, int i = 0) : a(r), b(i) {}
+  
+      // Overloading the + operator
+      Complex operator+(const Complex& rhs) const {
+          return Complex(a + rhs.a, b + rhs.b);
+      }
+  
+      void display() const {
+          cout << a << " + " << b << endl;
+      }
+};
+
+int main() {
+    Complex c1(3, 2), c2(1, 3);
+    Complex c3 = c1 + c2; // Calls operator + on c1 with c2 as argument
+    c3.display();
+    return 0;
+}
+```
+
+
+
+perator overloading in C++ allows developers to redefine the way operators work with user-defined types (classes). This feature makes classes feel more natural to use by enabling syntactic conveniences found with built-in types. However, it's important to use operator overloading judiciously to keep code intuitive and maintainable.
+
+
+
+
+
+
+
+
+
 
 ## Inheritance (Module03)
 Inheritance is a core concept in object-oriented programming that allows a class to inherit class properties (methods/attributes) from another class. The class whose properties are inherited is usually called the `Base class` and the class that inherits those properties is ususally called the `derived class`

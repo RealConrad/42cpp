@@ -24,13 +24,13 @@
 This repository serves as a personal roadmap through the fascinating world of C++, documenting my progress from the very basics to advanced concepts. Starting with fundamental syntax and basic data types, I delve into the core of C++ programming, exploring variables, operators, and control structures to lay a solid foundation. As my journey advances, I tackle more complex topics such as functions, arrays, pointers, and memory management, crucial for understanding the language's depth. The adventure doesn't stop there; I further immerse myself in object-oriented programming, mastering classes, inheritance, and polymorphism.
 
 
-## Concepts
+# Concepts
 - [Classes, Member functions and other basics (Module00)](#classes-member-functions-and-other-basics-module00)
 - [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-and-references-module01)
 - [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
 
-## Classes, Member functions and other basics (Module00)
+# Classes, Member functions and other basics (Module00)
 ### What is a class?
 A class is a "blueprint" for creating objects. A class contains the following key aspects:
 - **Data encapsulation:** A class can contain private, protected and public members. Private are only accessible from within other members of the same class. Protected members are accessible from the class itself and its derived classes. Public members are accessible from anywhere/anyone.
@@ -53,7 +53,9 @@ class MyClass {
 };
 ```
 
-## Memory allocation, pointers to members and references (Module01)
+
+
+# Memory allocation, pointers to members and references (Module01)
 ### Memory allocation
 In C++ you allocate memory using the `new` keyword and free/cleanup using the `delete` keyword.
 ```cpp
@@ -147,12 +149,20 @@ After modification through pointer: 20
 After modification through reference: 30
 ```
 
-## Operator overloading and Orthodox Canonical class form (Module02)
 
-#### Operator overloading
-Allows developers to redefine the way operators (e.g. `+, -, \, *, =, == etc..` work with classes.
 
-You can define an operator overloading: `MyClassName operator<operator-to-overload>()`.
+# Operator overloading and Orthodox Canonical class form (Module02)
+### Operator overloading
+Allows developers to redefine the way operators (e.g. `+, -, \, *, =, == etc..` work with classes. This works by defining a special member function which will be called when the operator is used on objects of that class. When overloading an operator like `+`, you essentially write a member function that specifies what should happen when an object of your class is added to another object.
+
+How the define would look like for the `+` operator: \
+`MyClassName operator+(const MyClassName& rhs) const;`
+
+
+How the example below works:
+1. The object on the left-hand side of the + operator (in this case, `a`) is implicitly represented by the this pointer inside the member function.
+2. The object on the right-hand side of the + operator (in this case, `b`) is passed explicitly to the function as the parameter `rhs`.
+3. The member function defines how to combine this object (the left-hand side) with the rhs object (the right-hand side) and returns a new object of the same type representing the result.
 
 Example:
 ```cpp
@@ -176,27 +186,97 @@ class Complex {
 };
 
 int main() {
-    Complex c1(3, 2), c2(1, 3);
-    Complex c3 = c1 + c2; // Calls operator + on c1 with c2 as argument
+    Complex a(3, 2);
+    Complex b(1, 3);
+
+    Complex c = a + b; // Calls operator + on a with b as argument
     c3.display();
     return 0;
 }
 ```
 
+### Orthodox Canonical Form
+This is a C++ convention that states all classes should have atleast 4 special member functions (Constructor, copy constructor, copy assignment operator, and deconstructor).
 
+- **Default Constructor** Initializes objects, often setting member variables to default values.
+- **Copy Constructor:** Creates a new object as a copy of an existing object. It deep copies objects, preventing issues like double free, that other wise would be an issue with shallow copies
+- **Copy Assignment Operator:** Allows one object to be assigned to another, replacing its current state. It is pretty similar to the copy constructor. The copy assignment operator must ensure that resources are copied safely, avoiding resource leaks and ensuring that each object maintains its own copy of the resources.
+- **Destructor:** Cleans up resources that the object may have acquired during its lifetime. This function is called when the program ends or the object is explicitly deleted. It's essential for releasing resources like dynamic memory to prevent memory leaks.
 
-perator overloading in C++ allows developers to redefine the way operators work with user-defined types (classes). This feature makes classes feel more natural to use by enabling syntactic conveniences found with built-in types. However, it's important to use operator overloading judiciously to keep code intuitive and maintainable.
+### Example
+```cpp
+#include <iostream>
 
+class SimpleResource {
+  private:
+      double* value;
+  
+  public:
+      // Default Constructor
+      SimpleResource() : value(new double(0.0)) {
+          std::cout << "Default Constructor: Resource allocated." << std::endl;
+      }
+  
+      // Parameterized Constructor for convenience
+      SimpleResource(double val) : value(new double(val)) {
+          std::cout << "Parameterized Constructor: Resource allocated with value " << *value << std::endl;
+      }
+  
+      // Copy Constructor
+      SimpleResource(const SimpleResource& src) : value(new double(*(src.value))) {
+          std::cout << "Copy Constructor: Resource copied with value " << *value << std::endl;
+      }
+  
+      // Copy Assignment Operator
+      SimpleResource& operator=(const SimpleResource& src) {
+          if (this != &src) {
+              // Deallocate existing resource
+              delete value;
+              // Allocate new resource and copy
+              value = new double(*(src.value));
+              std::cout << "Copy Assignment Operator: Resource reallocated with value " << *value << std::endl;
+          }
+          return *this;
+      }
+  
+      // Destructor
+      ~SimpleResource() {
+          delete value;
+          std::cout << "Destructor: Resource deallocated." << std::endl;
+      }
+  
+      // Utility function to display the value
+      void display() const {
+          std::cout << "Value: " << *value << std::endl;
+      }
+};
 
+int main() {
+    SimpleResource res1(10.5);   // Using the parameterized constructor
+    SimpleResource res2 = res1;  // Copy constructor
+    SimpleResource res3;         // Default constructor
+    res3 = res2;                 // Copy assignment operator
 
+    res1.display();
+    res2.display();
+    res3.display();
+    return 0;
+}
 
+OUTPUT:
+Parameterized Constructor: Resource allocated with value 10.5
+Copy Constructor: Resource copied with value 10.5
+Default Constructor: Resource allocated.
+Copy Assignment Operator: Resource reallocated with value 10.5
+Value: 10.5
+Value: 10.5
+Value: 10.5
+Destructor: Resource deallocated.
+Destructor: Resource deallocated.
+Destructor: Resource deallocated.
+```
 
-
-
-
-
-
-## Inheritance (Module03)
+# Inheritance (Module03)
 Inheritance is a core concept in object-oriented programming that allows a class to inherit class properties (methods/attributes) from another class. The class whose properties are inherited is usually called the `Base class` and the class that inherits those properties is ususally called the `derived class`
 
 Some key aspects/benefits of inheritance:

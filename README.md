@@ -27,6 +27,8 @@ This repository serves as a personal roadmap through the fascinating world of C+
 ## Concepts
 - [Classes, Member functions and other basics (Module00)](#classes-member-functions-and-other-basics-module00)
 - [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-and-references-module01)
+- TBD (Module02)
+- [Inheritence (Module03)](#inheritence-module03)
 
 ## Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -99,14 +101,14 @@ int main() {
 ```
 
 ### Pointers vs Reference
-- **Pointers:**
+**Pointers:**
   - **What is it:** A pointer is a variable that holds the memory address of another variable. 
   - **Syntax:** `dataType* pointerName = &variable`
   - **Nullability:** Can be `NULL` (can also be `nullptr` in C++11).
   - **Reassignment:** Can be reassignedd to point to another object
   - **Usage:** Dynamic memeory allocation (new/delete), optional function parameters, more complex data structures (e.g. linked lists)
 
-- **References:**
+**References:**
   - **What is it:** A reference acts as an "alias" for another variable. When you declare a reference to a variable, you are essentially creating a second name that refers to the original variable. Any operations performed on the reference affect the original variable directly because both the reference and the original variable refer to the same memory location.
   - **Syntax:** `dataType& refName = variable`
   - **Nullability:** Cannot be `NULL`.
@@ -145,8 +147,19 @@ After modification through pointer: 20
 After modification through reference: 30
 ```
 
+## Inheritance (Module03)
+Inheritance is a core concept in object-oriented programming that allows a class to inherit class properties (methods/attributes) from another class. The class whose properties are inherited is usually called the `Base class` and the class that inherits those properties is ususally called the `derived class`. \
 
+Some key aspects/benefits of inheritance:
+- **Reuseability:**: Derived classes reuse the code from their base classes without having to rewrite it. This is easier to maintain/less duplication.
+- **Polymorphism:** A derived class can override functions of its base class.
+- **Encapsulation:** Supports the encapsulation principle by allowing derived classes to access/modify data/behaviour of their base class while keeping certain attributes private/protected from outside access.
 
+The types of inheritence:
+- **Single inheritance:** A derived class inherits from one base class.
+- **Multiple inheritance:** A derived class inherits from multiple base classes.
+- **Multilevel inheritance:** A class is derived from a class which is also derived from another class.
+- **Hierarchical Inheritance:** Multiple classes are derived from a single base class.
+- **Hybrid Inheritance:** A combination of two or more types of inheritance.
 
-### Polymorphism, abstract classes, interfaces (Module04)
 

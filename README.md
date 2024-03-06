@@ -30,7 +30,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 
 ## Classes, Member functions and other basics (Module00)
 ### What is a class?
-A class is a "blueprint" for creating objects. It defines a new data type. A class contains the following key aspects:
+A class is a "blueprint" for creating objects. A class contains the following key aspects:
 - **Data encapsulation:** A class can contain private, protected and public members. Private are only accessible from within other members of the same class. Protected members are accessible from the class itself and its derived classes. Public members are accessible from anywhere/anyone.
 - **Member functions:** These are essentially functions defined inside a class. They can manipulate data members of the class or perform other actions. They are defined/declared inside the class.
 - **Constructors/Deconstructors:** These are special members functions that get called when the object is created/destroyed respectively. They are used for initializing/cleaning up objects.

@@ -181,7 +181,7 @@ class Complex {
       }
   
       void display() const {
-          cout << a << " + " << b << endl;
+          std::cout << a << " + " << b << std::endl;
       }
 };
 
@@ -190,9 +190,12 @@ int main() {
     Complex b(1, 3);
 
     Complex c = a + b; // Calls operator + on a with b as argument
-    c3.display();
+    c.display();
     return 0;
 }
+
+OUTPUT:
+4 + 5
 ```
 
 ### Orthodox Canonical Form

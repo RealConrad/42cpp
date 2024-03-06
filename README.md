@@ -148,7 +148,7 @@ After modification through reference: 30
 ```
 
 ## Inheritance (Module03)
-Inheritance is a core concept in object-oriented programming that allows a class to inherit class properties (methods/attributes) from another class. The class whose properties are inherited is usually called the `Base class` and the class that inherits those properties is ususally called the `derived class`. \
+Inheritance is a core concept in object-oriented programming that allows a class to inherit class properties (methods/attributes) from another class. The class whose properties are inherited is usually called the `Base class` and the class that inherits those properties is ususally called the `derived class`
 
 Some key aspects/benefits of inheritance:
 - **Reuseability:**: Derived classes reuse the code from their base classes without having to rewrite it. This is easier to maintain/less duplication.
@@ -162,4 +162,89 @@ The types of inheritance:
 - **Hierarchical Inheritance:** Multiple classes are derived from a single base class.
 - **Hybrid Inheritance:** A combination of two or more types of inheritance.
 
+### Example
+In this simple example
+```cpp
+#include <iostream>
+
+// Base class
+class Vehicle {
+public:
+    void start() {
+        std::cout << "Vehicle started." << std::endl;
+    }
+};
+
+// Derived class
+class Car : public Vehicle {
+public:
+    void displayType() {
+        std::cout << "I am a Car." << std::endl;
+    }
+};
+
+int main() {
+    Car myCar;
+    myCar.start(); // Calling method from base class
+    myCar.displayType(); // Calling method from derived class
+    return 0;
+}
+
+OUTPUT:
+Vehicle started.
+I am a Car.
+```
+
+More complex example showing polymorphism:
+```cpp
+#include <iostream>
+
+// Base class
+class Vehicle {
+public:
+    // make method viritual to override it in derived classes
+    virtual void start() const {
+        std::cout << "Vehicle starts in a generic way." << std::endl;
+    }
+
+    // Virtual destructor to ensure proper cleanup of derived classes
+    virtual ~Vehicle() {}
+};
+
+// Derived class from Vehicle
+class Car : public Vehicle {
+public:
+    // Override start function
+    void start() const {
+        std::cout << "Car starts with a smooth sound." << std::endl;
+    }
+};
+
+// Another derived class from Vehicle
+class Truck : public Vehicle {
+public:
+    // Override start function
+    void start() const {
+        std::cout << "Truck starts with a loud rumble." << std::endl;
+    }
+};
+
+int main() {
+    Vehicle* myCar = new Car();
+    Vehicle* myTruck = new Truck();
+
+    // Demonstrating polymorphism
+    myCar->start(); // Calls Car's start()
+    myTruck->start(); // Calls Truck's start()
+
+    // Clean up
+    delete myCar;
+    delete myTruck;
+    return 0;
+}
+
+OUTPUT:
+Car starts with a smooth sound.
+Truck starts with a loud rumble.
+```
 

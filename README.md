@@ -160,7 +160,7 @@ How the define would look like for the `+` operator: \
 
 
 How the example below works:
-1. The object on the left-hand side of the + operator (in this case, `a`) is implicitly represented by the this pointer inside the member function.
+1. The object on the left-hand side of the + operator (in this case, `a`) is implicitly represented by the `this pointer` inside the member function.
 2. The object on the right-hand side of the + operator (in this case, `b`) is passed explicitly to the function as the parameter `rhs`.
 3. The member function defines how to combine this object (the left-hand side) with the rhs object (the right-hand side) and returns a new object of the same type representing the result.
 

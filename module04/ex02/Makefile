@@ -1,4 +1,4 @@
-NAME		= ex01
+NAME		= ex02
 CXXFLAGS	= -std=c++98 -Wall -Wextra -Werror -g
 SRC			= main.cpp Animal.cpp Dog.cpp Cat.cpp WrongCat.cpp WrongAnimal.cpp Brain.cpp
 OBJ			= $(SRC:%.cpp=%.o)

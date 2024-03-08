@@ -7,8 +7,10 @@
 
 class Character: public ICharacter {
 	private:
+		static const int backpackCapacity = 4;
 		std::string name;
 		AMateria* inventory[4];
+		AMateria* backpack[backpackCapacity];
 	public:
 		Character(const std::string& name);
 		Character(const Character& other);

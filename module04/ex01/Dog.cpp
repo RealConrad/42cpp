@@ -28,3 +28,12 @@ Dog& Dog::operator=(const Dog& copy) {
 	std::cout << "Dog copy assignment called" << std::endl;
 	return *this;
 }
+
+void Dog::addIdea(const std::string& idea) {
+	this->brain->addIdea(idea);
+}
+
+void Dog::printIdeas() const {
+	this->brain->printIdeas();
+}
+

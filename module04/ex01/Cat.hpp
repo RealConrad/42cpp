@@ -15,6 +15,8 @@ class Cat: public Animal {
 		Cat(const Cat& copy); // copy constructor
 		Cat& operator=(const Cat& copy); // copy assignment constructor
 		void makeSound() const;
+		void addIdea(const std::string& idea);
+		void printIdeas() const;
 };
 
 #endif

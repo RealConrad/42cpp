@@ -27,3 +27,11 @@ Cat& Cat::operator=(const Cat& copy) {
 	std::cout << "Cat copy assignment called" << std::endl;
 	return *this;
 }
+
+void Cat::addIdea(const std::string& idea) {
+	this->brain->addIdea(idea);
+}
+
+void Cat::printIdeas() const {
+	this->brain->printIdeas();
+}

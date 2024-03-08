@@ -29,6 +29,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-and-references-module01)
 - [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
+- [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
 
 # Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -380,3 +381,4 @@ Car starts with a smooth sound.
 Truck starts with a loud rumble.
 ```
 
+# Subtype polymorphism, abstract classes and interfaces (Module04)

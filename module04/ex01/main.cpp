@@ -31,10 +31,12 @@ int main() {
 	dog->addIdea("Guard house");
 	dog->addIdea("Throw the ball for me!");
 
+	std::cout << std::endl;
 	std::cout<< "Cat ideas:" << std::endl;
 	cat->printIdeas();
 	std::cout<< "Dog ideas:" << std::endl;
 	dog->printIdeas();
+	std::cout << std::endl;
 
 	delete cat;
 	delete dog;

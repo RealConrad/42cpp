@@ -4,6 +4,17 @@ Ice::Ice(): AMateria::AMateria("ice") {
 
 }
 
+Ice::Ice(const Ice& other): AMateria(other) {
+	
+}
+
+Ice& Ice::operator=(const Ice& other) {
+	if (this != &other) {
+		AMateria::operator=(other);
+	}
+	return *this;
+}
+
 Ice::~Ice() {
 	
 }

@@ -6,6 +6,31 @@ MateriaSource::MateriaSource() {
 	}
 }
 
+MateriaSource::MateriaSource(const MateriaSource& other) {
+	for (int i = 0; i < 4; i++) {
+		this->templates[i] = NULL;
+	}
+	for (int i = 0; i < 4; i++) {
+		if (other.templates[i])
+			this->templates[i] = other.templates[i];
+	}
+}
+
+MateriaSource& MateriaSource::operator=(const MateriaSource& other) {
+	if (this != &other) {
+		for (int i = 0; i < 4; i++) {
+			delete this->templates[i];
+			this->templates[i] = NULL;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			if (other.templates[i])
+				this->templates[i] = other.templates[i];
+		}
+	}
+	return *this;
+}
+
 MateriaSource::~MateriaSource() {
 	for (int i = 0; i < 4; i++) {
 		delete this->templates[i];

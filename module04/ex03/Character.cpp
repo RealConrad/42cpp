@@ -31,7 +31,9 @@ Character& Character::operator=(const Character& other) {
 
 
 Character::~Character() {
-
+	for (int i = 0; i < 4; i++) {
+		delete this->inventory[i];
+	}
 }
 
 std::string const& Character::getName() const {

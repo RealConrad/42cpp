@@ -382,3 +382,63 @@ Truck starts with a loud rumble.
 ```
 
 # Subtype polymorphism, abstract classes and interfaces (Module04)
+### Subtype polymorphism
+Subtype polymorphism, also known as runtime polymorphism or dynamic polymorphism. It allows a function to use objects of different types (subtypes) through a common "interface". Essentially, it lets you write more general and reusable code by interacting with the base class interface, while the actual operations performed can be specific to the derived class implementations. This is typically achieved through the use of virtual functions in C++.
+
+### The Mechanism Behind Subtype Polymorphism
+At the core of subtype polymorphism is the concept of a virtual function table (vtable), which is an implementation detail in C++ (and many other languages that support runtime polymorphism). 
+
+- **Virtual Functions:** When you declare a method as virtual in a base class, C++ creates a vtable. This table maps virtual functions to their concrete implementations. Each class that overrides a virtual method or has virtual methods has its own version of this table.
+
+- **Object Layout:** Each object of a class that has virtual methods (or inherits from a class with virtual methods) contains a hidden pointer (often called a vptr) that points to the vtable for its class. This vtable contains the addresses of the class's virtual functions as they should be called for that specific instance.
+
+- **Method Dispatch:** When you call a virtual method on an object through a pointer or reference to a base class, the actual function that gets called is determined at runtime using the vtable of the object's actual class (i.e., the class of the instance).
+
+Consider the the below example:
+- The `Animal` class defines a virtual method `makeSound`.
+- Both `Dog` and `Cat` classes override this method.
+- When `makeSound` is called on `myPet`, which is an `Animal*`, the actual method that gets executed is determined by the type of object `myPet` points to at runtime.
+- Despite `myPet` being a pointer to `Animal`, it can point to an object of any class derived from `Animal`, and the correct `makeSound` method (from `Dog` or `Cat`) is invoked. This is subtype polymorphism in action.
+
+```cpp
+class Animal {
+  public:
+      virtual void makeSound() const {
+          std::cout << "Some generic animal sound" << std::endl;
+      }
+      virtual ~Animal() {} // Virtual destructor for safe polymorphic deletion
+};
+
+class Dog : public Animal {
+  public:
+      void makeSound() const override {
+          std::cout << "Bark!" << std::endl;
+      }
+};
+
+class Cat : public Animal {
+  public:
+      void makeSound() const override {
+          std::cout << "Meow!" << std::endl;
+      }
+};
+
+int main() {
+  Animal* myPet = new Dog();
+  myPet->makeSound(); // Outputs: Bark!
+  
+  delete myPet; // Clean up
+  
+  myPet = new Cat();
+  myPet->makeSound(); // Outputs: Meow!
+  
+  delete myPet; // Clean up
+}
+
+OUTPUT:
+Bark!
+Meow!
+```
+
+
+

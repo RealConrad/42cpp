@@ -411,14 +411,14 @@ class Animal {
 
 class Dog : public Animal {
   public:
-      void makeSound() const override {
+      void makeSound() const {
           std::cout << "Bark!" << std::endl;
       }
 };
 
 class Cat : public Animal {
   public:
-      void makeSound() const override {
+      void makeSound() const {
           std::cout << "Meow!" << std::endl;
       }
 };

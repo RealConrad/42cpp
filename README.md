@@ -440,5 +440,46 @@ Bark!
 Meow!
 ```
 
+### Virtual Functions
+Virtual functions are member functions that are declared in a base class and can be overridden in derived classes. They are needed to achieve runtime polymorphism. The virtual keyword is used to declare a function as virtual, override (introduced in C++11, but the concept is still the same in C++98) indicates that the function is intended to override a virtual function in a base class.
+
+```cpp
+class Base {
+public:
+    virtual void display() const { std::cout << "Base display" << std::endl; }
+};
+
+class Derived : public Base {
+public:
+    void display() const { std::cout << "Derived display" << std::endl; } // Overrides Base's display
+};
+
+int main() {
+  Base* basePtr = new Derived();
+  basePtr->display(); // Calls Derived::display
+  delete basePtr;
+}
+OUTPUT:
+Derived display
+```
+
+### Abstract classes
+Abstract classes are classes that cannot be instantiated on their own. They are typically used as base classes in inheritance hierarchies. An abstract class is made abstract by declaring at least one of its functions as pure virtual (using = 0). Interfaces in C++ are a special case of abstract classes where all the methods are pure virtual.
+
+```cpp
+class IShape { // Interface/Abstract class
+  public:
+      virtual double area() const = 0; // make function purely virtual
+      virtual ~IShape() {}
+};
+
+class Circle : public IShape { // Inherit from IShape
+  private:
+      double radius;
+  public:
+      Circle(double r) : radius(r) {}
+      double area() const { return 3.14 * radius * radius; }
+};
+```
 
 

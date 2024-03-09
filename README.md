@@ -29,6 +29,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Memory allocation, pointers to members, references (Module01)](#memory-allocation-pointers-to-members-and-references-module01)
 - [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
+- [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
 
 # Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -379,4 +380,106 @@ OUTPUT:
 Car starts with a smooth sound.
 Truck starts with a loud rumble.
 ```
+
+# Subtype polymorphism, abstract classes and interfaces (Module04)
+### Subtype polymorphism
+Subtype polymorphism, also known as runtime polymorphism or dynamic polymorphism. It allows a function to use objects of different types (subtypes) through a common "interface". Essentially, it lets you write more general and reusable code by interacting with the base class interface, while the actual operations performed can be specific to the derived class implementations. This is typically achieved through the use of virtual functions in C++.
+
+### The Mechanism Behind Subtype Polymorphism
+At the core of subtype polymorphism is the concept of a virtual function table (vtable), which is an implementation detail in C++ (and many other languages that support runtime polymorphism). 
+
+- **Virtual Functions:** When you declare a method as virtual in a base class, C++ creates a vtable. This table maps virtual functions to their concrete implementations. Each class that overrides a virtual method or has virtual methods has its own version of this table.
+
+- **Object Layout:** Each object of a class that has virtual methods (or inherits from a class with virtual methods) contains a hidden pointer (often called a vptr) that points to the vtable for its class. This vtable contains the addresses of the class's virtual functions as they should be called for that specific instance.
+
+- **Method Dispatch:** When you call a virtual method on an object through a pointer or reference to a base class, the actual function that gets called is determined at runtime using the vtable of the object's actual class (i.e., the class of the instance).
+
+Consider the the below example:
+- The `Animal` class defines a virtual method `makeSound`.
+- Both `Dog` and `Cat` classes override this method.
+- When `makeSound` is called on `myPet`, which is an `Animal*`, the actual method that gets executed is determined by the type of object `myPet` points to at runtime.
+- Despite `myPet` being a pointer to `Animal`, it can point to an object of any class derived from `Animal`, and the correct `makeSound` method (from `Dog` or `Cat`) is invoked. This is subtype polymorphism in action.
+
+```cpp
+class Animal {
+  public:
+      virtual void makeSound() const {
+          std::cout << "Some generic animal sound" << std::endl;
+      }
+      virtual ~Animal() {} // Virtual destructor for safe polymorphic deletion
+};
+
+class Dog : public Animal {
+  public:
+      void makeSound() const {
+          std::cout << "Bark!" << std::endl;
+      }
+};
+
+class Cat : public Animal {
+  public:
+      void makeSound() const {
+          std::cout << "Meow!" << std::endl;
+      }
+};
+
+int main() {
+  Animal* myPet = new Dog();
+  myPet->makeSound(); // Outputs: Bark!
+  
+  delete myPet; // Clean up
+  
+  myPet = new Cat();
+  myPet->makeSound(); // Outputs: Meow!
+  
+  delete myPet; // Clean up
+}
+
+OUTPUT:
+Bark!
+Meow!
+```
+
+### Virtual Functions
+Virtual functions are member functions that are declared in a base class and can be overridden in derived classes. They are needed to achieve runtime polymorphism. The virtual keyword is used to declare a function as virtual, override (introduced in C++11, but the concept is still the same in C++98) indicates that the function is intended to override a virtual function in a base class.
+
+```cpp
+class Base {
+public:
+    virtual void display() const { std::cout << "Base display" << std::endl; }
+};
+
+class Derived : public Base {
+public:
+    void display() const { std::cout << "Derived display" << std::endl; } // Overrides Base's display
+};
+
+int main() {
+  Base* basePtr = new Derived();
+  basePtr->display(); // Calls Derived::display
+  delete basePtr;
+}
+OUTPUT:
+Derived display
+```
+
+### Abstract classes
+Abstract classes are classes that cannot be instantiated on their own. They are typically used as base classes in inheritance hierarchies. An abstract class is made abstract by declaring at least one of its functions as pure virtual (using = 0). Interfaces in C++ are a special case of abstract classes where all the methods are pure virtual.
+
+```cpp
+class IShape { // Interface/Abstract class
+  public:
+      virtual double area() const = 0; // make function purely virtual
+      virtual ~IShape() {}
+};
+
+class Circle : public IShape { // Inherit from IShape
+  private:
+      double radius;
+  public:
+      Circle(double r) : radius(r) {}
+      double area() const { return 3.14 * radius * radius; }
+};
+```
+
 

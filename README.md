@@ -30,6 +30,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
 - [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
+- [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -169,16 +170,16 @@ Example:
 ```cpp
 #include <iostream>
 
-class Complex {
+class MyClass {
   private:
       int a;
       int b;
   public:
-      Complex(int r = 0, int i = 0) : a(r), b(i) {}
+      MyClass(int r = 0, int i = 0) : a(r), b(i) {}
   
       // Overloading the + operator
-      Complex operator+(const Complex& rhs) const {
-          return Complex(a + rhs.a, b + rhs.b);
+      MyClass operator+(const MyClass& rhs) const {
+          return MyClass(this->a + rhs.a, this->b + rhs.b);
       }
   
       void display() const {
@@ -187,10 +188,10 @@ class Complex {
 };
 
 int main() {
-    Complex a(3, 2);
-    Complex b(1, 3);
+    MyClass a(3, 2);
+    MyClass b(1, 3);
 
-    Complex c = a + b; // Calls operator + on a with b as argument
+    MyClass c = a + b; // Calls operator+() on `a` with `b` as argument
     c.display();
     return 0;
 }
@@ -483,3 +484,82 @@ class Circle : public IShape { // Inherit from IShape
 ```
 
 
+# General Concepts
+## Declaring functions as const
+When you declare a member funciton as const, it means the funciton cannot modify any class member variables of the class (except mutable ones).
+
+```cpp
+class MyClass {
+  public:
+      int value = 0;
+      mutable int mutableValue = 0;
+  
+      void setValue(int v) { value = v; }  // Non-const function, can modify the object.
+      int getValue() const { return value; }  // Const function, cannot modify the object (except mutable members).
+  
+      void updateCache() const {
+          // value = 5; // This would cause a compiler error, cannot modify 'value' in a const function.
+          mutableValue = 5; // Allowed, because 'mutableValue' is mutable.
+      }
+};
+```
+
+## Static vs dynamic typecasting
+The main differences between the two are when they are checked (compile time vs run time) and their safety in polymorphism.
+
+Static Casting (static_cast):
+- **Purpose and Use Cases:** `static_cast` is mainly used for conversions between types using a well-defined conversion, including both implicit conversions (e.g., from int to float) and explicit conversions that do not involve a change in polymorphic type (e.g., converting between pointer types of related classes). It can also be used to perform any conversion explicitly allowed by the programmer, such as between unrelated pointer types or between numerical types.
+
+- **When Checked:** The validity of a `static_cast` is determined at compile time.
+
+- **Safety and Polymorphism:** While `static_cast` can be used to convert between pointers or references to base and derived classes, it does not check the actual type of the object at runtime. Therefore, using `static_cast` to downcast (convert a base class pointer/reference to a derived class pointer/reference) is inherently **_UNSAFE_** without external guarantees about the object's type. It assumes that the programmer knows the type of the derived class and does not perform any runtime checks to verify this.
+
+Dynamic Casting (dynamic_cast):
+- **Purpose and Use Cases:** `dynamic_cast` is specifically designed for safe downcasting when using polymorphism, allowing the safe conversion of base class pointers or references to derived class pointers or references. It can only be used with polymorphic classes (those with at least one virtual function). It is typically used to determine the correct dynamic type of an object at runtime.
+
+- **When Checked:** The validity of a dynamic_cast is checked at runtime.
+
+- **Safety and Polymorphism:** `dynamic_cast` is safe in the context of polymorphism. It checks the actual type of the object at runtime to ensure the requested cast is valid. If a `dynamic_cast` is used to downcast to a pointer type and the cast is invalid, it returns `nullptr/NULL`. If it is used to downcast to a reference type and the cast is invalid, it throws a `std::bad_cast exception`. This makes `dynamic_cast` suitable for scenarios where the exact type of an object is not known at compile time.
+
+Example
+```cpp
+#include <iostream>
+
+class Animal {
+  public:
+      virtual void makeSound() { std::cout << "Some animal sound" << std::endl; }
+      virtual ~Animal() {}
+};
+
+class Dog : public Animal {
+  public:
+      virtual void makeSound() { std::cout << "Woof" << std::endl; }
+      void fetch() { std::cout << "Fetching!" << std::endl; }
+};
+
+class Cat : public Animal {
+  public:
+      virtual void makeSound() { std::cout << "Meow" << std::endl; }
+};
+
+int main() {
+    Animal* animalPtr = new Cat(); // Animal pointer actually points to a Cat
+    animalPtr->makeSound(); // Polymorphism, will output: Meow
+
+    // Using static_cast (no runtime check, assumes programmer knows the conversion is safe)
+    Dog* dogPtr = static_cast<Dog*>(animalPtr); 
+    // dogPtr->fetch(); // Undefined behavior because animalPtr actually points to a Cat
+
+    // Using dynamic_cast (runtime type check)
+    Dog* anotherDogPtr = dynamic_cast<Dog*>(animalPtr);
+    if (anotherDogPtr) {
+        anotherDogPtr->fetch(); // This block won't execute because animalPtr is not pointing to a Dog
+    } else {
+        std::cout << "The dynamic_cast failed because animalPtr is not a Dog." << std::endl;
+    }
+
+    delete animalPtr; // Clean up
+    return 0;
+}
+
+```

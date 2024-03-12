@@ -510,7 +510,7 @@ The main differences between the two are when they are checked (compile time vs 
 Static Casting (static_cast):
 - **Purpose and Use Cases:** `static_cast` is mainly used for conversions between types using a well-defined conversion, including both implicit conversions (e.g., from int to float) and explicit conversions that do not involve a change in polymorphic type (e.g., converting between pointer types of related classes). It can also be used to perform any conversion explicitly allowed by the programmer, such as between unrelated pointer types or between numerical types.
 
-- **When Checked:** The validity of a `static_cast` is determined at compile time. This means the compiler must have enough information to verify that the conversion is possible according to the rules of the language.
+- **When Checked:** The validity of a `static_cast` is determined at compile time.
 
 - **Safety and Polymorphism:** While `static_cast` can be used to convert between pointers or references to base and derived classes, it does not check the actual type of the object at runtime. Therefore, using `static_cast` to downcast (convert a base class pointer/reference to a derived class pointer/reference) is inherently **_UNSAFE_** without external guarantees about the object's type. It assumes that the programmer knows the type of the derived class and does not perform any runtime checks to verify this.
 

@@ -170,16 +170,16 @@ Example:
 ```cpp
 #include <iostream>
 
-class Complex {
+class MyClass {
   private:
       int a;
       int b;
   public:
-      Complex(int r = 0, int i = 0) : a(r), b(i) {}
+      MyClass(int r = 0, int i = 0) : a(r), b(i) {}
   
       // Overloading the + operator
-      Complex operator+(const Complex& rhs) const {
-          return Complex(this->a + rhs.a, this->b + rhs.b);
+      MyClass operator+(const MyClass& rhs) const {
+          return MyClass(this->a + rhs.a, this->b + rhs.b);
       }
   
       void display() const {
@@ -188,10 +188,10 @@ class Complex {
 };
 
 int main() {
-    Complex a(3, 2);
-    Complex b(1, 3);
+    MyClass a(3, 2);
+    MyClass b(1, 3);
 
-    Complex c = a + b; // Calls operator+() on `a` with `b` as argument
+    MyClass c = a + b; // Calls operator+() on `a` with `b` as argument
     c.display();
     return 0;
 }

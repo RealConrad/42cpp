@@ -1,4 +1,6 @@
 #include "MateriaSource.hpp"
+#include "Ice.hpp"
+#include "Cure.hpp"
 
 MateriaSource::MateriaSource() {
 	for (int i = 0; i < 4; i++) {
@@ -40,11 +42,14 @@ MateriaSource::~MateriaSource() {
 void MateriaSource::learnMateria(AMateria *m) {
 	for (int i = 0; i < 4; i++) {
 		if (!this->templates[i]) {
-			this->templates[i] = m;
+			if (dynamic_cast<Ice *>(m))
+				this->templates[i] = new Ice(*dynamic_cast<Ice *>(m));
+			else if (dynamic_cast<Cure *>(m))
+				this->templates[i] = new Cure(*dynamic_cast<Cure *>(m));
 			return ;
 		}
 	}
-	delete m;
+	std::cout << "Cannot learn more materia!" << std::endl;
 }
 
 AMateria* MateriaSource::createMateria(std::string const& type) {

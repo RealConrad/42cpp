@@ -8,8 +8,10 @@
 
 int main() {
 	IMateriaSource* src = new MateriaSource();
-	src->learnMateria(new Ice());
-	src->learnMateria(new Cure());
+	Ice* ice = new Ice();
+	Cure* cure = new Cure();
+	src->learnMateria(ice);
+	src->learnMateria(cure);
 	ICharacter* me = new Character("me");
 
 	AMateria* tmp;
@@ -33,9 +35,12 @@ int main() {
 	me->unequip(2);
 	me->unequip(10); // invalid index
 
+	// cleanup
 	delete bob;
 	delete me;
 	delete src;
+	delete ice;
+	delete cure;
 
 	return 0;
 }

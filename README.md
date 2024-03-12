@@ -485,7 +485,7 @@ class Circle : public IShape { // Inherit from IShape
 
 
 # General Concepts
-### Declaring functions as const
+## Declaring functions as const
 When you declare a member funciton as const, it means the funciton cannot modify any class member variables of the class (except mutable ones).
 
 ```cpp
@@ -504,7 +504,7 @@ class MyClass {
 };
 ```
 
-### Static vs dynamic typecasting
+## Static vs dynamic typecasting
 The main differences between the two are when they are checked (compile time vs run time) and their safety in polymorphism.
 
 Static Casting (static_cast):

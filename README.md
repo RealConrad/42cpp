@@ -30,6 +30,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
 - [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
+- [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
 ### What is a class?
@@ -482,4 +483,7 @@ class Circle : public IShape { // Inherit from IShape
 };
 ```
 
+
+# General Concepts
+### Static vs dynamic typecasting
 

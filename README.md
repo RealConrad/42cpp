@@ -179,7 +179,7 @@ class Complex {
   
       // Overloading the + operator
       Complex operator+(const Complex& rhs) const {
-          return Complex(a + rhs.a, b + rhs.b);
+          return Complex(this->a + rhs.a, this->b + rhs.b);
       }
   
       void display() const {
@@ -191,7 +191,7 @@ int main() {
     Complex a(3, 2);
     Complex b(1, 3);
 
-    Complex c = a + b; // Calls operator + on a with b as argument
+    Complex c = a + b; // Calls operator+() on `a` with `b` as argument
     c.display();
     return 0;
 }

@@ -297,7 +297,7 @@ The types of inheritance:
 - **Hybrid Inheritance:** A combination of two or more types of inheritance.
 
 ### Example
-In this simple example
+Simple example
 ```cpp
 #include <iostream>
 
@@ -329,7 +329,7 @@ Vehicle started.
 I am a Car.
 ```
 
-More complex example showing polymorphism:
+More complex example showing polymorphism/data encapsulation:
 ```cpp
 #include <iostream>
 #include <string>

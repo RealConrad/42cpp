@@ -389,11 +389,13 @@ Subtype polymorphism, also known as runtime polymorphism or dynamic polymorphism
 ### The Mechanism Behind Subtype Polymorphism
 At the core of subtype polymorphism is the concept of a virtual function table (vtable), which is an implementation detail in C++ (and many other languages that support runtime polymorphism). 
 
-- **Virtual Functions:** When you declare a method as virtual in a base class, C++ creates a vtable. This table maps virtual functions to their concrete implementations. Each class that overrides a virtual method or has virtual methods has its own version of this table.
+- **Virtual Functions:** If you mark a class method as virtual, C++ sets up a special lookup table (kind of like a directory) for those methods. This is called a virtual function table, or vtable for short.
 
-- **Object Layout:** Each object of a class that has virtual methods (or inherits from a class with virtual methods) contains a hidden pointer (often called a vptr) that points to the vtable for its class. This vtable contains the addresses of the class's virtual functions as they should be called for that specific instance.
+- **Object Layout:** Each object of a class that uses virtual functions gets a hidden pointer. This pointer points to its class's vtable. The vtable has information on how to find the actual functions the object should use.
 
-- **Method Dispatch:** When you call a virtual method on an object through a pointer or reference to a base class, the actual function that gets called is determined at runtime using the vtable of the object's actual class (i.e., the class of the instance).
+- **Method Dispatch:** When you call a virtual method on a class object, C++ checks the object's vtable to find out which specific function to execute. This lets the program decide which function to run while it's running, based on the actual type of the object, even if you're using a pointer or reference to a more general base class.
+
+To summarise: C++ uses this vtable system to make sure that when you call a function on an object. It runs the correct version of the function for that specific type of object, even in complex cases with inheritance.
 
 Consider the the below example:
 - The `Animal` class defines a virtual method `makeSound`.

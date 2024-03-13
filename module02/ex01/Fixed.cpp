@@ -15,6 +15,13 @@ Fixed::Fixed(const int num) {
 Fixed::Fixed(const float num) {
 	std::cout << "Default float constructor called" << std::endl;
 	// (1 << bits) is basically 2^bits. Shifting 1 to the left by `n` in binary is equivalent to 2^n
+	/*
+		Scaling the number: The input float number is multiplied by 2^fractionalBits.
+		Given fractionalBits = 8, this is equivalent to multiplying by 256 (1 << 8 equals 256). 
+		This scaling step is needed because it moves the decimal point 8 places to the right, 
+		turning the fractional part of the number into an integer. 
+		This is how fixed point arithmetic simulates fractions using integer math.
+	*/
 	this->fixedPoint = static_cast<int>(roundf(num * (1 << this->fractionalBits)));
 }
 
@@ -51,6 +58,10 @@ void Fixed::setRawBits(int const raw) {
 }
 
 float Fixed::toFloat(void) const {
+	/*
+		reverses the initial scaling and moves the decimal point back to its original place,
+		converting the number back into its floating-point form.
+	*/
 	return static_cast<float>(this->getRawBits()) / static_cast<float>(1 << this->fractionalBits);
 }
 

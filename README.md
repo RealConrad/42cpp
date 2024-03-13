@@ -310,7 +310,7 @@ public:
 };
 
 // Derived class
-class Car : public Vehicle {
+class Car : public Vehicle { // Car inherits from Vehicle
 public:
     void displayType() {
         std::cout << "I am a Car." << std::endl;

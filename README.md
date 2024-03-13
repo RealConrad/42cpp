@@ -332,44 +332,71 @@ I am a Car.
 More complex example showing polymorphism:
 ```cpp
 #include <iostream>
+#include <string>
 
 // Base class
 class Vehicle {
-public:
-    // make method viritual to override it in derived classes
-    virtual void start() const {
-        std::cout << "Vehicle starts in a generic way." << std::endl;
-    }
-
-    // Virtual destructor to ensure proper cleanup of derived classes
-    virtual ~Vehicle() {}
+  private:
+      // Encapsulated member variable
+      std::string licensePlate;
+  
+  public:
+      // Constructor to initialize licensePlate
+      Vehicle(const std::string& licensePlate) : licensePlate(licensePlate) {}
+  
+      // Virtual method to be overridden by derived classes
+      virtual void start() const {
+          std::cout << "Vehicle starts in a generic way." << std::endl;
+      }
+  
+      // Virtual destructor for proper cleanup
+      virtual ~Vehicle() {}
+  
+      // Public getter for licensePlate
+      std::string getLicensePlate() const {
+          return licensePlate;
+      }
+  
+      // Public setter for licensePlate
+      void setLicensePlate(const std::string& plate) {
+          licensePlate = plate;
+      }
 };
 
 // Derived class from Vehicle
 class Car : public Vehicle {
-public:
-    // Override start function
-    void start() const {
-        std::cout << "Car starts with a smooth sound." << std::endl;
-    }
+  public:
+      // Using Vehicle's constructor
+      Car(const std::string& licensePlate) : Vehicle(licensePlate) {}
+  
+      // Override start function
+      virtual void start() const {
+          std::cout << "Car starts with a smooth sound." << std::endl;
+      }
 };
 
 // Another derived class from Vehicle
 class Truck : public Vehicle {
-public:
-    // Override start function
-    void start() const {
-        std::cout << "Truck starts with a loud rumble." << std::endl;
-    }
+  public:
+      // Using Vehicle's constructor
+      Truck(const std::string& licensePlate) : Vehicle(licensePlate) {}
+  
+      // Override start function
+      virtual void start() const {
+          std::cout << "Truck starts with a loud rumble." << std::endl;
+      }
 };
 
 int main() {
-    Vehicle* myCar = new Car();
-    Vehicle* myTruck = new Truck();
+    Vehicle* myCar = new Car("ABC123");
+    Vehicle* myTruck = new Truck("XYZ789");
 
     // Demonstrating polymorphism
     myCar->start(); // Calls Car's start()
+    std::cout << "Car license plate: " << myCar->getLicensePlate() << std::endl;
+
     myTruck->start(); // Calls Truck's start()
+    std::cout << "Truck license plate: " << myTruck->getLicensePlate() << std::endl;
 
     // Clean up
     delete myCar;
@@ -377,9 +404,11 @@ int main() {
     return 0;
 }
 
-OUTPUT:
-Car starts with a smooth sound.
-Truck starts with a loud rumble.
+// Expected OUTPUT:
+// Car starts with a smooth sound.
+// Car license plate: ABC123
+// Truck starts with a loud rumble.
+// Truck license plate: XYZ789
 ```
 
 # Subtype polymorphism, abstract classes and interfaces (Module04)

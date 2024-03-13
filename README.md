@@ -517,7 +517,7 @@ Static Casting (static_cast):
 Dynamic Casting (dynamic_cast):
 - **Purpose and Use Cases:** `dynamic_cast` is specifically designed for safe downcasting when using polymorphism, allowing the safe conversion of base class pointers or references to derived class pointers or references. It can only be used with polymorphic classes (those with at least one virtual function). It is typically used to determine the correct dynamic type of an object at runtime.
 
-- **When Checked:** The validity of a dynamic_cast is checked at runtime.
+- **When Checked:** The validity of a `dynamic_cast` is checked at runtime.
 
 - **Safety and Polymorphism:** `dynamic_cast` is safe in the context of polymorphism. It checks the actual type of the object at runtime to ensure the requested cast is valid. If a `dynamic_cast` is used to downcast to a pointer type and the cast is invalid, it returns `nullptr/NULL`. If it is used to downcast to a reference type and the cast is invalid, it throws a `std::bad_cast exception`. This makes `dynamic_cast` suitable for scenarios where the exact type of an object is not known at compile time.
 

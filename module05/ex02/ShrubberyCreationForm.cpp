@@ -20,7 +20,9 @@ void ShrubberyCreationForm::execute(Bureaucrat const& executor) const {
 	if (!this->isSigned) throw NotSignedException();
 	if (executor.getGrade() > this->gradeToExecute) throw GradeTooHighException();
 
-	std::ofstream ofs(target + "_shrubbery");
+	std::string fileName = target + "_shrubbery";
+	// throws warning on linux if type is not `const char *`. Code still works without it on Mac.
+	std::ofstream ofs(fileName.c_str());
 	
 	ofs << "					,@@@@@@@,					" << std::endl;
 	ofs << "		,,,.   ,@@@@@@/@@,  .oo8888o.			" << std::endl;

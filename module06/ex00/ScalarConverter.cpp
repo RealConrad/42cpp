@@ -82,6 +82,20 @@ void ScalarConverter::displayChar(const std::string& str) {
 	std::cout << "Double: " << static_cast<double>(str[0]) << std::endl;
 }
 
+/**
+ * A literal in programming is a direct value given in code. 
+ * For example, 'a' is a character literal, 42 is an integer literal, and 4.2 is a double literal. 
+ * This function takes these as strings (e.g., "42") and converts them to their respective types.
+ * note Why do we use istringstream on an existing string?
+	- If you use the string directly, you have to interpret each character, and then calculate the numerical value (and verify its numeric). 
+		With std::istringstream, you simply do:
+		```
+		std::string str = "42";
+		std::istringstream iss(str);
+		int num;
+		iss >> num; // The string "42" is converted to the integer 42
+		```
+*/ 
 void ScalarConverter::displayInt(const std::string& str) {
 	std::istringstream iss(str);
 	int iValue;
@@ -102,7 +116,10 @@ void ScalarConverter::displayInt(const std::string& str) {
 }
 
 void ScalarConverter::displayFloat(const std::string& str) {
-	std::istringstream iss(str);
+	std::string temp = str;
+	if (temp.back() == 'f' || temp.back() == 'F')
+		temp.pop_back();
+	std::istringstream iss(temp);
 	float fValue;
 
 	// parse string to float
@@ -158,23 +175,28 @@ bool ScalarConverter::isInt(const std::string& str) {
 	int iValue;
 	iss >> iValue;
 	if (!iss.fail() && iss.eof() && iValue < INT_MAX && iValue > INT_MIN)
+	{
 		return true;
+	}
 	return false;
 }
 
 bool ScalarConverter::isFloat(const std::string& str) {
-	// Check for 'f' or 'F' or decimal point
-	if (str.back() == 'f' || str.back() == 'F' || str.find('.') != std::string::npos) {
-		std::istringstream iss(str);
+	std::string temp = str;
+
+	if (temp.back() == 'f' || temp.back() == 'F')
+		temp.pop_back();
+	if (temp.find('.') != std::string::npos) {
+		std::istringstream iss(temp);
 		float fValue;
 		iss >> fValue;
-		return !iss.fail() && iss.eof();
+		if (!iss.fail() && iss.eof())
+			return true;
 	}
 	return false;
 }
 
 bool ScalarConverter::isDouble(const std::string& str) {
-	// if not int/float can assume its double (if its numeric)
 	if (!ScalarConverter::isInt(str) && !ScalarConverter::isFloat(str)) {
 		std::istringstream iss(str);
 		double dValue;

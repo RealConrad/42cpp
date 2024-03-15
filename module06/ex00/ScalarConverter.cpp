@@ -14,23 +14,25 @@ ScalarConverter& ScalarConverter::operator=(const ScalarConverter& other) {
 ScalarConverter::~ScalarConverter() {}
 
 void ScalarConverter::convert(const std::string& str) {
-	switch(ScalarConverter::findDataType(str)) {
+	ScalarConverter sc;
+
+	switch(sc.findDataType(str, sc)) {
 		case DATA_NAN:
 		case DATA_INF_POSITIVE:
 		case DATA_INF_NEGATIVE:
-			ScalarConverter::displayInvalid(str);
+			sc.displayInvalid(str);
 			break;
 		case DATA_CHAR:
-			ScalarConverter::displayChar(str);
+			sc.displayChar(str);
 			break;
 		case DATA_INT:
-			ScalarConverter::displayInt(str);
+			sc.displayInt(str);
 			break;
 		case DATA_FLOAT:
-			ScalarConverter::displayFloat(str);
+			sc.displayFloat(str);
 			break;
 		case DATA_DOUBLE:
-			ScalarConverter::displayDouble(str);
+			sc.displayDouble(str);
 			break;
 		default:
 			std::cout << "The string '" << str << "' is not recorgnized" << std::endl;
@@ -38,24 +40,23 @@ void ScalarConverter::convert(const std::string& str) {
 	}
 }
 
-Types ScalarConverter::findDataType(const std::string& str) {
+Types ScalarConverter::findDataType(const std::string& str, ScalarConverter& sc) {
 	std::istringstream iss(str);
 
 	if (str == "nanf" || str == "nan")
 		return DATA_NAN;
-	else if (str == "+inff" || str == "+inf")
+	if (str == "+inff" || str == "+inf")
 		return DATA_INF_POSITIVE;
-	else if (str == "-inff" || str == "-inf")
+	if (str == "-inff" || str == "-inf")
 		return DATA_INF_NEGATIVE;
-	else if (str.length() == 1 && std::isalpha(str[0]))
+	if (str.length() == 1 && std::isalpha(str[0]))
 		return DATA_CHAR;
-	else if (ScalarConverter::isInt(str)) {
+	if (sc.isInt(str))
 		return DATA_INT;
-	} else if (ScalarConverter::isFloat(str)) {
+	if (sc.isFloat(str))
 		return DATA_FLOAT;
-	} else if (ScalarConverter::isDouble(str)) {
+	if (sc.isDouble(str))
 		return DATA_DOUBLE;
-	}
 	return DATA_UNRECOGNIZED;
 }
 
@@ -97,7 +98,10 @@ void ScalarConverter::displayChar(const std::string& str) {
 		```
 */ 
 void ScalarConverter::displayInt(const std::string& str) {
-	std::istringstream iss(str);
+	std::string temp = str;
+	if (temp.back() == 'f' || temp.back() == 'F')
+		temp.pop_back();
+	std::istringstream iss(temp);
 	int iValue;
 	char c;
 
@@ -145,25 +149,26 @@ void ScalarConverter::displayFloat(const std::string& str) {
 }
 
 void ScalarConverter::displayDouble(const std::string& str) {
-	std::istringstream iss(str);
+	std::string temp = str;
+	if (temp.back() == 'f' || temp.back() == 'F')
+		temp.pop_back();
+	std::istringstream iss(temp);
 	double dValue;
 	// parse string to double
 	iss >> dValue;
 	if (!iss.fail() && iss.eof()) {
 		std::cout << "DOUBLE TYPE!" << std::endl;
-		// Display as char
 		if (std::isprint(static_cast<char>(dValue)))
 			std::cout << "Char: " << static_cast<char>(dValue) << std::endl;
 		else
 			std::cout << "Char: Invalid" << std::endl;
 
-		// Display as int
 		if (dValue > INT_MAX || dValue < INT_MIN) {
 			std::cout << "Int: Invalid" << std::endl;
 		} else {
 			std::cout << "Int: " << static_cast<int>(dValue) << std::endl;
 		}
-		std::cout << "Float: " << dValue << "f" << std::endl;
+		std::cout << "Float: " << static_cast<float>(dValue) << "f" << std::endl;
 		std::cout << "Double: " << static_cast<double>(dValue) << std::endl;
 	}
 }
@@ -175,9 +180,7 @@ bool ScalarConverter::isInt(const std::string& str) {
 	int iValue;
 	iss >> iValue;
 	if (!iss.fail() && iss.eof() && iValue < INT_MAX && iValue > INT_MIN)
-	{
 		return true;
-	}
 	return false;
 }
 

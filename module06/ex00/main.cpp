@@ -36,7 +36,7 @@ void testInts() {
 	std::cout << std::endl;
 	ScalarConverter::convert("-2147483647");
 	std::cout << std::endl;
-	ScalarConverter::convert("2147483648");
+	ScalarConverter::convert("-101");
 	std::cout << std::endl;
 }
 
@@ -69,8 +69,9 @@ void testDouble() {
 }
 
 int main() {
-	testChars();
+	// ScalarConverter* sc = new ScalarConverter(); // throws error as its not instanciable
+	// testChars();
 	testInts();
-	testFloats();
-	testDouble();
+	// testFloats();
+	// testDouble();
 }

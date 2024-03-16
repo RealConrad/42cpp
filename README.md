@@ -30,7 +30,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
 - [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
-- [Exceptions](#exceptions)
+- [Exceptions (Module05)](#exceptions-module05)
 - [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
@@ -515,7 +515,7 @@ class Circle : public IShape { // Inherit from IShape
 };
 ```
 
-# Exceptions
+# Exceptions (Module05)
 In C++, exceptions are used for handling errors in a flexible/consistent way. This involves three keywords: `try, catch, and throw`. A try block must be followed by one or more catch blocks.
 If an exception is thrown and not caught within the same function, it propagates (is passed on) to the function that called it. If no suitable catch block is found there, the propagation continues up the call stack.
 It's possible to catch all exceptions by using `catch (...) {}`, but it's generally better practice to catch specific exceptions so you can handle each one individually.

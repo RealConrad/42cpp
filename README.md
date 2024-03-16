@@ -30,6 +30,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Operator overloading and Orthodox Canonical class form (Module02)](#operator-overloading-and-orthodox-canonical-class-form-module02)
 - [Inheritance (Module03)](#inheritance-module03)
 - [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
+- [Exceptions (Module05)](#exceptions-module05)
 - [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
@@ -514,6 +515,69 @@ class Circle : public IShape { // Inherit from IShape
 };
 ```
 
+# Exceptions (Module05)
+In C++, exceptions are used for handling errors in a flexible/consistent way. This involves three keywords: `try, catch, and throw`. A try block must be followed by one or more catch blocks.
+If an exception is thrown and not caught within the same function, it propagates (is passed on) to the function that called it. If no suitable catch block is found there, the propagation continues up the call stack.
+It's possible to catch all exceptions by using `catch (...) {}`, but it's generally better practice to catch specific exceptions so you can handle each one individually.
+
+- **try:** A block of code that might throw an exception. It's a way of saying "I'm going to attempt this code, but it might fail."
+- **catch:** This block is used to handle the exception. You can have multiple catch blocks to handle different types of exceptions. Each catch block is designed to catch a specific type of exception or a range of them.
+- **throw:** Used to actually throw an exception when a problem is detected. You can throw any object as an exception, but it's common practice to use objects of classes that inherit from std::exception.
+
+
+Example
+```cpp
+#include <iostream>
+#include <stdexcept> // Include for std::runtime_error
+
+int main() {
+    try {
+        std::cout << "Trying to divide by zero!" << std::endl;
+        int denominator = 0;
+        if (denominator == 0) {
+            throw std::runtime_error("Division by zero!");
+        }
+    } catch (const std::runtime_error& e) {
+        std::cout << "Caught an exception: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+OUTPUT:
+Caught an exception: Division by zero!
+```
+
+### Custom Exceptions
+You can also define your own exception classes. These should inherit from `std::exception` and override the `what()` method to return a message.
+
+Example
+```cpp
+#include <iostream>
+#include <exception>
+
+// Custom exception class
+class MyException : public std::exception {
+public:
+    virtual const char* what() const throw() { // override what()
+        return "Custom Exception occurred!";
+    }
+};
+
+int main() {
+    try {
+        throw MyException();
+    } catch (const MyException& e) { // catch cusom exception
+        std::cout << "Caught MyException: " << e.what() << std::endl;
+    } catch (const std::exception& e) {
+        // This catch block can catch all other std::exception-based exceptions
+        std::cout << "Standard exception: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+OUTPUT:
+Caught MyException: Custom Exception occurred!
+```
 
 # General Concepts
 ## Declaring functions as const

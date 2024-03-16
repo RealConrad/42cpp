@@ -6,13 +6,19 @@ void testFloats();
 void testDouble();
 void testInvalid();
 
-int main() {
+int main(int argc, char **argv) {
+	if (argc == 2) {
+		ScalarConverter::convert(argv[1]);
+	} else {
+		std::cout << "Only 1 argument allowed" << std::endl;
+	}
 	// ScalarConverter* sc = new ScalarConverter(); // throws error as its not instanciable
-	testChars();
-	testInts();
-	testFloats();
-	testDouble();
-	testInvalid();
+	// testChars();
+	// testInts();
+	// testFloats();
+	// testDouble();
+	// testInvalid();
+	return 0;
 }
 
 

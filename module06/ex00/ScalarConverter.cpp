@@ -131,15 +131,13 @@ bool ScalarConverter::isFloat(const std::string& str, double& value) {
 
 	if (temp.back() == 'f' || temp.back() == 'F')
 		temp.pop_back();
-	// if (temp.find('.') != std::string::npos) {
-		std::istringstream iss(temp);
-		float fValue;
-		iss >> fValue;
-		if (!iss.fail() && iss.eof()) {
-			value = fValue;
-			return true;
-		}
-	// }
+	std::istringstream iss(temp);
+	float fValue;
+	iss >> fValue;
+	if (!iss.fail() && iss.eof()) {
+		value = fValue;
+		return true;
+	}
 	return false;
 }
 

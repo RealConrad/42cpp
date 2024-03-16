@@ -27,17 +27,13 @@ class ScalarConverter {
 		static void convert(const std::string& str);
 		
 	private:
-		bool isFloat(const std::string& str);
-		bool isInt(const std::string& str);
-		bool isDouble(const std::string& str);
+		bool isFloat(const std::string& str, double& value);
+		bool isInt(const std::string& str, double& value);
+		bool isDouble(const std::string& str, double& value);
 
-		void displayChar(const std::string& str);
-		void displayInt(const std::string& str);
-		void displayFloat(const std::string& str);
-		void displayDouble(const std::string& str);
-
-		Types findDataType(const std::string& str, ScalarConverter& sc);
+		Types findDataType(const std::string& str, ScalarConverter& sc, double& value);
 		void displayInvalid(const std::string& str);
+		void displayValid(const std::string& str, double& value);
 		// By making the constructor private, you prevent users from creating instances of the ScalarConverter class.
 		// This is because users cannot access private members of a class, including constructors.
 		ScalarConverter();

@@ -75,21 +75,6 @@ void ScalarConverter::displayInvalid(const std::string& str) {
 	}
 }
 
-/**
- * A literal in programming is a direct value given in code. 
- * For example, 'a' is a character literal, 42 is an integer literal, and 4.2 is a double literal. 
- * This function takes these as strings (e.g., "42") and converts them to their respective types.
- * note Why do we use istringstream on an existing string?
-	- If you use the string directly, you have to interpret each character, and then calculate the numerical value (and verify its numeric). 
-		With std::istringstream, you simply do:
-		```
-		std::string str = "42";
-		std::istringstream iss(str);
-		int num;
-		iss >> num; // The string "42" is converted to the integer 42
-		```
-*/
-
 void ScalarConverter::displayValid(const std::string& str, double& value) {
 	(void)str;
 	// Char
@@ -114,6 +99,22 @@ void ScalarConverter::displayValid(const std::string& str, double& value) {
 }
 
 /* ----------------------------- Check data type ---------------------------- */
+
+
+/**
+ * A literal in programming is a direct value given in code. 
+ * For example, 'a' is a character literal, 42 is an integer literal, and 4.2 is a double literal. 
+ * This function takes these as strings (e.g., "42") and converts them to their respective types.
+ * Why do we use istringstream on an existing string?
+	- If you use the string directly, you have to interpret each character, and then calculate the numerical value (and verify its numeric). 
+		With std::istringstream, you simply do:
+		```
+		std::string str = "42";
+		std::istringstream iss(str);
+		int num;
+		iss >> num; // The string "42" is converted to the integer 42
+		```
+*/
 
 bool ScalarConverter::isInt(const std::string& str, double& value) {
 	std::istringstream iss(str);

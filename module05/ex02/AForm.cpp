@@ -23,8 +23,8 @@ AForm::AForm(std::string name, int gradeToSign, int gradeToExecute, bool isSigne
 	gradeToExecute(gradeToExecute),
 	isSigned(isSigned)
 {
-	if (this->gradeToSign < 1) throw GradeTooLowException();
-	if (this->gradeToSign > 150) throw GradeTooHighException();
+	if (this->gradeToSign < 1) throw GradeTooHighException();
+	if (this->gradeToSign > 150) throw GradeTooLowException();
 }
 
 AForm& AForm::operator=(const AForm& other) {

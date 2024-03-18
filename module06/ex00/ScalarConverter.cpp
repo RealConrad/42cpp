@@ -92,14 +92,19 @@ void ScalarConverter::displayValid(const std::string& str, double& value) {
 	}
 
 	// float
-	std::cout << "Float: " << std::fixed << std::setprecision(1) << static_cast<float>(value) << "f" << std::endl;
+	float fValue = static_cast<float>(value);
+	double fRes = value - static_cast<double>(fValue);
+	if (fRes == 0) {
+		std::cout << "Float: " << std::fixed << static_cast<float>(value) << "f" << std::endl;
+	} else {
+		std::cout << "Float: " << std::fixed << static_cast<float>(value) << "f (LOST PRECISION!)" << std::endl;
+	}
 
 	// Double
-	std::cout << "Double: " << std::fixed << std::setprecision(1) << static_cast<double>(value) << std::endl;
+	std::cout << "Double: " << std::fixed << static_cast<double>(value) << std::endl;
 }
 
 /* ----------------------------- Check data type ---------------------------- */
-
 
 /**
  * A literal in programming is a direct value given in code. 
@@ -129,29 +134,27 @@ bool ScalarConverter::isInt(const std::string& str, double& value) {
 
 bool ScalarConverter::isFloat(const std::string& str, double& value) {
 	std::string temp = str;
-
-	if (temp.back() == 'f' || temp.back() == 'F')
+	if (temp.back() == 'f' || temp.back() == 'F') {
 		temp.pop_back();
-	std::istringstream iss(temp);
-	float fValue;
-	iss >> fValue;
-	if (!iss.fail() && iss.eof()) {
-		value = fValue;
-		return true;
+		std::istringstream iss(temp);
+		double fValue;
+		iss >> fValue;
+		if (!iss.fail() && iss.eof()) {
+			value = fValue;
+			return true;
+		}
 	}
 	return false;
 }
 
 bool ScalarConverter::isDouble(const std::string& str, double& value) {
-	if (!ScalarConverter::isInt(str, value) && !ScalarConverter::isFloat(str, value)) {
-		std::istringstream iss(str);
-		double dValue;
-		iss >> dValue;
-		if (!iss.fail() && iss.eof())
-		{
-			value = dValue;
-			return true;
-		}
+	std::istringstream iss(str);
+	double dValue;
+	iss >> dValue;
+	if (!iss.fail() && iss.eof())
+	{
+		value = dValue;
+		return true;
 	}
 	return (false);
 }

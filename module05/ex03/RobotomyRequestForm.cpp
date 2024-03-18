@@ -19,7 +19,7 @@ RobotomyRequestForm::~RobotomyRequestForm() {}
 
 void RobotomyRequestForm::execute(Bureaucrat const& executor) const {
 	if (!this->isSigned) throw NotSignedException();
-	if (executor.getGrade() > this->gradeToExecute) throw GradeTooLowException();
+	if (this->gradeToExecute < executor.getGrade()) throw GradeTooLowException();
 
 	std::cout << "* Drilling noises * " << std::endl;
 	// seed/initialize the RNG, basically give it a random starting point.

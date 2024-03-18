@@ -19,7 +19,7 @@ void testRobotomyRequestForm() {
 	} catch (std::exception& e) {
 		std::cout << e.what() << std::endl;
 	}
-	Bureaucrat intern("Intern", 150);
+	Bureaucrat intern("Intern", 149);
 	try {
 		robotForm.execute(intern);
 	} catch (std::exception& e) {

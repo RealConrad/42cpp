@@ -5,8 +5,8 @@ Bureaucrat::Bureaucrat(): name("Bobby"), grade(1) {
 }
 
 Bureaucrat::Bureaucrat(const std::string& name, const int grade): name(name) {
-	if (grade < 1) throw GradeTooLowException();
-	if (grade > 150) throw GradeTooHighException();
+	if (grade < 1) throw GradeTooHighException();
+	if (grade > 150) throw GradeTooLowException();
 	this->grade = grade;
 	// std::cout << "Parameterized constructor called" << std::endl;
 }

@@ -10,8 +10,13 @@ struct Point {
 void printInt(int element) {
 	std::cout << element << " ";
 }
+
 void increaseAndPrint(int element) {
 	std::cout << ++element << " ";
+}
+
+void sqr2(int& element) {
+	element *= element;
 }
 
 void printString(const std::string& str) {
@@ -27,7 +32,13 @@ int main() {
 	int arr[6] = {1, 2, 3, 4, 5, 6};
 	iter(arr, 6, printInt);
 	std::cout << std::endl;
+
 	iter(arr, 6, increaseAndPrint);
+	std::cout << std::endl;
+
+	iter(arr, 6, sqr2);
+	iter(arr, 6, printInt);
+	std::cout << std::endl;
 
 	std::cout << std::endl;
 	std::cout << std::endl;

@@ -1,5 +1,5 @@
 #ifndef TYPE_HPP
-#define TYPE
+#define TYPE_HPP
 
 #include <cstdlib>
 #include <ctime>

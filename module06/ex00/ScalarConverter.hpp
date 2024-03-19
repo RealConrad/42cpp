@@ -33,7 +33,7 @@ class ScalarConverter {
 
 		Types findDataType(const std::string& str, ScalarConverter& sc, double& value);
 		void displayInvalid(const std::string& str);
-		void displayValid(const std::string& str, double& value);
+		void displayValid(double& value);
 		// By making the constructor private, you prevent users from creating instances of the ScalarConverter class.
 		// This is because users cannot access private members of a class, including constructors.
 		ScalarConverter();

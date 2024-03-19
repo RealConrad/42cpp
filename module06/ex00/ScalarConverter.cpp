@@ -27,7 +27,7 @@ void ScalarConverter::convert(const std::string& str) {
 		case DATA_INT:
 		case DATA_FLOAT:
 		case DATA_DOUBLE:
-			sc.displayValid(str, value);
+			sc.displayValid(value);
 			break;
 		default:
 			std::cout << "The string '" << str << "' is not recorgnized" << std::endl;
@@ -67,7 +67,7 @@ void ScalarConverter::displayInvalid(const std::string& str) {
 	std::cout << "Int: Invalid" << std::endl;
 	if (str == "nanf" || str == "-inff" || str == "+inff") {
 		std::cout << "Float: " << str << std::endl;
-		copy.back() = '\0';
+		copy[copy.length()] = '\0';
 		std::cout << "Double: " << copy << std::endl;
 	} else {
 		std::cout << "Float: " << str << "f" << std::endl;
@@ -75,8 +75,7 @@ void ScalarConverter::displayInvalid(const std::string& str) {
 	}
 }
 
-void ScalarConverter::displayValid(const std::string& str, double& value) {
-	(void)str;
+void ScalarConverter::displayValid(double& value) {
 	// Char
 	if (value < CHAR_MAX && value > CHAR_MIN && std::isprint(static_cast<char>(value))) {
 		std::cout << "Char: " << static_cast<char>(value) << std::endl;
@@ -134,8 +133,8 @@ bool ScalarConverter::isInt(const std::string& str, double& value) {
 
 bool ScalarConverter::isFloat(const std::string& str, double& value) {
 	std::string temp = str;
-	if (temp.back() == 'f' || temp.back() == 'F') {
-		temp.pop_back();
+	if (temp[temp.length()] == 'f' || temp[temp.length()] == 'F') {
+		temp[temp.length()] = '\0';
 		std::istringstream iss(temp);
 		double fValue;
 		iss >> fValue;

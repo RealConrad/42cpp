@@ -1,8 +1,9 @@
 #ifndef SERIALIZER_HPP
 #define SERIALIZER_HPP
 
-#include <iostream>
-#include <cstdint>
+#include <string>
+#include <cstdlib>
+#include <stdint.h>
 #include "Data.hpp"
 
 class Serializer {

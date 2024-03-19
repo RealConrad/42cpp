@@ -18,5 +18,4 @@ void swap(T& x, T& y) {
 	y = temp;
 }
 
-
 #endif

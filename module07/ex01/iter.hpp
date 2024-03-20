@@ -1,6 +1,5 @@
 #ifndef ITER_HPP
-#define ITER_HPP
-
+# define ITER_HPP
 
 /**
  * @brief Iterates over an array and applies `func` to each element.

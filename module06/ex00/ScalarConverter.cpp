@@ -18,15 +18,10 @@ void ScalarConverter::convert(const std::string& str) {
 	double value = 0;
 
 	switch(sc.findDataType(str, sc, value)) {
-		case DATA_NAN:
-		case DATA_INF_POSITIVE:
-		case DATA_INF_NEGATIVE:
+		case DATA_INVALID:
 			sc.displayInvalid(str);
 			break;
-		case DATA_CHAR:
-		case DATA_INT:
-		case DATA_FLOAT:
-		case DATA_DOUBLE:
+		case DATA_VALID:
 			sc.displayValid(value);
 			break;
 		default:
@@ -39,22 +34,13 @@ Types ScalarConverter::findDataType(const std::string& str, ScalarConverter& sc,
 	std::istringstream iss(str);
 
 	if (str == "nanf" || str == "nan")
-		return DATA_NAN;
+		return DATA_INVALID;
 	if (str == "+inff" || str == "+inf")
-		return DATA_INF_POSITIVE;
+		return DATA_INVALID;
 	if (str == "-inff" || str == "-inf")
-		return DATA_INF_NEGATIVE;
-	if (str.length() == 1 && std::isalpha(str[0]))
-	{
-		value = static_cast<int>(str[0]);
-		return DATA_CHAR;
-	}
-	if (sc.isInt(str, value))
-		return DATA_INT;
-	if (sc.isFloat(str, value))
-		return DATA_FLOAT;
-	if (sc.isDouble(str, value))
-		return DATA_DOUBLE;
+		return DATA_INVALID;
+	if (sc.isValid(str, value))
+		return DATA_VALID;
 	return DATA_UNRECOGNIZED;
 }
 
@@ -90,20 +76,10 @@ void ScalarConverter::displayValid(double& value) {
 		std::cout << "Int: Invalid" << std::endl;
 	}
 
-	// float
-	float fValue = static_cast<float>(value);
-	double fRes = value - static_cast<double>(fValue);
-	if (fRes == 0) {
-		std::cout << "Float: " << std::fixed << static_cast<float>(value) << "f" << std::endl;
-	} else {
-		std::cout << "Float: " << std::fixed << static_cast<float>(value) << "f (LOST PRECISION!)" << std::endl;
-	}
-
+	std::cout << "Float: " << std::fixed << static_cast<float>(value) << "f" << std::endl;
 	// Double
 	std::cout << "Double: " << std::fixed << static_cast<double>(value) << std::endl;
 }
-
-/* ----------------------------- Check data type ---------------------------- */
 
 /**
  * A literal in programming is a direct value given in code. 
@@ -120,38 +96,21 @@ void ScalarConverter::displayValid(double& value) {
 		```
 */
 
-bool ScalarConverter::isInt(const std::string& str, double& value) {
-	std::istringstream iss(str);
-	int iValue;
-	iss >> iValue;
-	if (!iss.fail() && iss.eof() && iValue < INT_MAX && iValue > INT_MIN) {
-		value = iValue;
+bool ScalarConverter::isValid(const std::string& str, double& value) {
+	// check if character
+	if (str.length() == 1 && std::isalpha(str[0])) {
+		value = static_cast<int>(str[0]);
 		return true;
 	}
-	return false;
-}
 
-bool ScalarConverter::isFloat(const std::string& str, double& value) {
-	std::string temp = str;
-	if (temp[temp.length()] == 'f' || temp[temp.length()] == 'F') {
-		temp[temp.length()] = '\0';
-		std::istringstream iss(temp);
-		double fValue;
-		iss >> fValue;
-		if (!iss.fail() && iss.eof()) {
-			value = fValue;
-			return true;
-		}
-	}
-	return false;
-}
-
-bool ScalarConverter::isDouble(const std::string& str, double& value) {
-	std::istringstream iss(str);
+	// check if valid number:
+	std::string copy = str;
+	if (copy[copy.length() - 1] == 'f' || copy[copy.length() - 1] == 'F')
+		copy.erase(copy.length() - 1, 1);
+	std::istringstream iss(copy);
 	double dValue;
 	iss >> dValue;
-	if (!iss.fail() && iss.eof())
-	{
+	if (!iss.fail() && iss.eof()) {
 		value = dValue;
 		return true;
 	}

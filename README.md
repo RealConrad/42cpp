@@ -580,7 +580,7 @@ OUTPUT:
 Caught MyException: Custom Exception occurred!
 ```
 
-# Type casting (Module 06)
+# Type casting (Module06)
 ### Static Casting (static_cast):
 It is the most commonly used casting type in C++. It performs implicit conversions between types (such as int to float, or pointer to void*), and it can also call explicit conversion operators. The validaity of a `static_cast` is determined at compile time.
 

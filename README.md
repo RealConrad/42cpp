@@ -32,6 +32,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
 - [Exceptions (Module05)](#exceptions-module05)
 - [Type casting (Module06)](#type-casting-module06)
+- [Templates (Module07)](#templates-module07)
 - [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
@@ -663,8 +664,67 @@ int main() {
     delete animalPtr; // Clean up
     return 0;
 }
-
 ```
+
+# Templates (Module07)
+Templates allow use to write generic and reusable code. They allow us to define classes, functions, and methods that work with any data type.
+
+### How Templates Work
+Templates work by allowing us to "parameterize" our code with one or more types. When you instantiate a template with a specific type, the compiler generates a new class/function from the template, replacing the template parameters with the actual type provided. This is called template instantiation.
+
+Example:
+```cpp
+template <typename T>
+T min(const T x, const T y) {
+    return x < y ? x : y;
+}
+
+#include <iostream>
+int main() {
+  int a = min(1, -5);
+  std::cout << a << std::endl;
+  return 0;
+}
+OUTPUT:
+-5
+```
+In the above example, behind the sceenes, the compiler generates a specific version (an instantiation) on the `min()` function for the data type `int`, based on the template. The original template remains unchanged. It does not necessarily replace every instance of `T` with `int`, but rahter creates a new function that looks as if it were  specifically written for `int` types:
+```cpp
+int min(const int x, const int y) {
+  return x < y ? x : y;
+}
+```
+
+### Template Claasses
+A template class defines a blueprint for a class where the data type of its members can be specified as template parameters. There are also `Template Functions` as shown in the above example. 
+
+```cpp
+template <typename T>
+class Box {
+  private:
+      T content;
+  public:
+      Box(T content) : content(content) {}
+      T getContent() const { return this->content; }
+};
+
+#include <iostream>
+int main() {
+	Box<int> intBox(123);
+	Box<std::string> stringBox("Hello Templates");
+	std::cout << intBox.getContent() << std::endl;
+	std::cout << stringBox.getContent() << std::endl;
+	return 0;
+}
+
+OUTPUT:
+123
+Hello Templates
+```
+
+### Template Specialization
+
+
 
 # General Concepts
 ## Declaring functions as const

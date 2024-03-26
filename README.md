@@ -688,7 +688,7 @@ int main() {
 OUTPUT:
 -5
 ```
-In the above example, behind the sceenes, the compiler generates a specific version (an instantiation) on the `min()` function for the data type `int`, based on the template. The original template remains unchanged. It does not necessarily replace every instance of `T` with `int`, but rahter creates a new function that looks as if it were  specifically written for `int` types:
+In the above example, behind the scenes, the compiler generates a specific version (an instantiation) on the `min()` function for the data type `int`, based on the template. The original template remains unchanged. It does not necessarily replace every instance of `T` with `int`, but rahter creates a new function that looks as if it were  specifically written for `int` types:
 ```cpp
 int min(const int x, const int y) {
   return x < y ? x : y;

@@ -31,6 +31,8 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Inheritance (Module03)](#inheritance-module03)
 - [Subtype polymorphism, abstract classes and interfaces (Module04)](#subtype-polymorphism-abstract-classes-and-interfaces-module04)
 - [Exceptions (Module05)](#exceptions-module05)
+- [Type casting (Module06)](#type-casting-module06)
+- [Templates (Module07)](#templates-module07)
 - [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
@@ -579,42 +581,48 @@ OUTPUT:
 Caught MyException: Custom Exception occurred!
 ```
 
-# General Concepts
-## Declaring functions as const
-When you declare a member funciton as const, it means the funciton cannot modify any class member variables of the class (except mutable ones).
+# Type casting (Module06)
+### Static Casting (static_cast):
+It is the most commonly used casting type in C++. It performs implicit conversions between types (such as int to float, or pointer to void*), and it can also call explicit conversion operators. The validaity of a `static_cast` is determined at compile time.
 
+Example:
 ```cpp
-class MyClass {
-  public:
-      int value = 0;
-      mutable int mutableValue = 0;
-  
-      void setValue(int v) { value = v; }  // Non-const function, can modify the object.
-      int getValue() const { return value; }  // Const function, cannot modify the object (except mutable members).
-  
-      void updateCache() const {
-          // value = 5; // This would cause a compiler error, cannot modify 'value' in a const function.
-          mutableValue = 5; // Allowed, because 'mutableValue' is mutable.
-      }
-};
+int i = 10;
+float f = static_cast<float>(i); // Converts i to float
+```
+**Safety and Polymorphism:** While `static_cast` can be used to convert between pointers or references to base and derived classes, it does not check the actual type of the object at runtime. Therefore, using `static_cast` to downcast (convert a base class pointer/reference to a derived class pointer/reference) is inherently **_UNSAFE_** without external guarantees about the object's type. It assumes that the programmer knows the type of the derived class and does not perform any runtime checks to verify this.
+
+### Dynamic Casting (dynamic_cast):
+Primarily used with pointers and references to classes (or class objects). It safely converts pointers/references of a base class into pointers/references of a derived class. It’s used in polymorphism to determine the correct type of the derived class object at runtime.
+
+Example:
+```cpp
+class Base { virtual void print() {} };
+class Derived : public Base {};
+
+Base* basePtr = new Derived;
+Derived* derivedPtr = dynamic_cast<Derived*>(basePtr); // Safe downcasting
+```
+**Safety and Polymorphism:** `dynamic_cast` is safe in the context of polymorphism. It checks the actual type of the object at runtime to ensure the requested cast is valid. If a `dynamic_cast` is used to downcast to a pointer type and the cast is invalid, it returns `nullptr/NULL`. If it is used to downcast to a reference type and the cast is invalid, it throws a `std::bad_cast exception`. This makes `dynamic_cast` good for scenarios where the exact type of an object is not known at compile time.
+
+### Reinterpret Cast (reinterpret_cast):
+Changes one pointer type to another, an integral type to a pointer type or vice versa. There is little to no safety to ensure the conversion, so it should be used with caution and avoided if possible and is prone to undefined behaviour when used inappropriately (e.g. dereferencing a pointer from converting an integer, due to Invalid memory access, pointing to deallocated memory etc.)
+
+Exmaple:
+```cpp
+int* p = new int(10);
+uintptr_t intPtr = reinterpret_cast<uintptr_t>(p); // Converts pointer to integer
 ```
 
-## Static vs dynamic typecasting
-The main differences between the two are when they are checked (compile time vs run time) and their safety in polymorphism.
+### Const cast (const_cast):
+Used mainly to add or remove the const qualifer from a variable.
 
-Static Casting (static_cast):
-- **Purpose and Use Cases:** `static_cast` is mainly used for conversions between types using a well-defined conversion, including both implicit conversions (e.g., from int to float) and explicit conversions that do not involve a change in polymorphic type (e.g., converting between pointer types of related classes). It can also be used to perform any conversion explicitly allowed by the programmer, such as between unrelated pointer types or between numerical types.
-
-- **When Checked:** The validity of a `static_cast` is determined at compile time.
-
-- **Safety and Polymorphism:** While `static_cast` can be used to convert between pointers or references to base and derived classes, it does not check the actual type of the object at runtime. Therefore, using `static_cast` to downcast (convert a base class pointer/reference to a derived class pointer/reference) is inherently **_UNSAFE_** without external guarantees about the object's type. It assumes that the programmer knows the type of the derived class and does not perform any runtime checks to verify this.
-
-Dynamic Casting (dynamic_cast):
-- **Purpose and Use Cases:** `dynamic_cast` is specifically designed for safe downcasting when using polymorphism, allowing the safe conversion of base class pointers or references to derived class pointers or references. It can only be used with polymorphic classes (those with at least one virtual function). It is typically used to determine the correct dynamic type of an object at runtime.
-
-- **When Checked:** The validity of a `dynamic_cast` is checked at runtime.
-
-- **Safety and Polymorphism:** `dynamic_cast` is safe in the context of polymorphism. It checks the actual type of the object at runtime to ensure the requested cast is valid. If a `dynamic_cast` is used to downcast to a pointer type and the cast is invalid, it returns `nullptr/NULL`. If it is used to downcast to a reference type and the cast is invalid, it throws a `std::bad_cast exception`. This makes `dynamic_cast` suitable for scenarios where the exact type of an object is not known at compile time.
+Example:
+```cpp
+const int i = 10;
+int* modifiable = const_cast<int*>(&i);
+*modifiable = 5; // Modifies the value of i (although modifying a const is undefined behavior)
+```
 
 Example
 ```cpp
@@ -656,5 +664,131 @@ int main() {
     delete animalPtr; // Clean up
     return 0;
 }
+```
 
+# Templates (Module07)
+Templates allow use to write generic and reusable code. They allow us to define classes, functions, and methods that work with any data type.
+
+### How Templates Work
+Templates work by allowing us to "parameterize" our code with one or more types. When you instantiate a template with a specific type, the compiler generates a new class/function from the template, replacing the template parameters with the actual type provided. This is called template instantiation.
+
+Example:
+```cpp
+template <typename T>
+T min(const T x, const T y) {
+    return x < y ? x : y;
+}
+
+#include <iostream>
+int main() {
+  int a = min(1, -5);
+  std::cout << a << std::endl;
+  return 0;
+}
+OUTPUT:
+-5
+```
+In the above example, behind the scenes, the compiler generates a specific version (an instantiation) on the `min()` function for the data type `int`, based on the template. The original template remains unchanged. It does not necessarily replace every instance of `T` with `int`, but rahter creates a new function that looks as if it were  specifically written for `int` types:
+```cpp
+int min(const int x, const int y) {
+  return x < y ? x : y;
+}
+```
+
+### Template Claasses
+A template class defines a blueprint for a class where the data type of its members can be specified as template parameters. There are also `Template Functions` as shown in the above example. 
+
+```cpp
+template <typename T>
+class Box {
+  private:
+      T content;
+  public:
+      Box(T content) : content(content) {}
+      T getContent() const { return this->content; }
+};
+
+#include <iostream>
+int main() {
+	Box<int> intBox(123);
+	Box<std::string> stringBox("Hello Templates");
+	std::cout << intBox.getContent() << std::endl;
+	std::cout << stringBox.getContent() << std::endl;
+	return 0;
+}
+
+OUTPUT:
+123
+Hello Templates
+```
+
+### Template Specialization
+Template specialization in C++ allows you to define a different implementation of a template for a specific type. This is particularly useful when a generic implementation does not suit a particular type or when a type requires special handling.
+
+
+The reason to use template specialization is to optimize or customize behavior for specific types while maintaining the general template's flexibility for all other types
+
+In the Example below: \
+There's a generic `Box` template that works for any type `T`, storing a value and providing a method to access it. However, for the character type `char`, a specialized version of the `Box` class is provided. This specialization offers a different functionality, `specialDisplay()`, not available in the generic template.
+
+Example:
+```cpp
+template <typename T>
+class Box {
+  private:
+      T content;
+  public:
+      Box(T content) : content(content) {}
+      T getContent() const { return this->content; }
+};
+
+template <>
+class Box<char> {
+	private:
+    	char content;
+public:
+    Box(char content) : content(content) {}
+    void specialDisplay() const {
+        std::cout << "Special Box for char: " << this->content << std::endl;
+    }
+};
+
+int main() {
+	Box<int> a('b');
+	Box<char> b('b');
+	Box<double> c(69.12);
+
+	std::cout << a.getContent() << std::endl;
+	std::cout << c.getContent() << std::endl;
+	b.specialDisplay(); // Works becuasse its of type char
+	// a.specialDisplay(); // This will not work as the object `a` is `Box<int>` 
+
+	return 0;
+}
+
+OUTPUT:
+98
+69.12
+Special Box for char: b
+```
+
+
+# General Concepts
+## Declaring functions as const
+When you declare a member funciton as const, it means the funciton cannot modify any class member variables of the class (except mutable ones).
+
+```cpp
+class MyClass {
+  public:
+      int value = 0;
+      mutable int mutableValue = 0;
+  
+      void setValue(int v) { value = v; }  // Non-const function, can modify the object.
+      int getValue() const { return value; }  // Const function, cannot modify the object (except mutable members).
+  
+      void updateCache() const {
+          // value = 5; // This would cause a compiler error, cannot modify 'value' in a const function.
+          mutableValue = 5; // Allowed, because 'mutableValue' is mutable.
+      }
+};
 ```

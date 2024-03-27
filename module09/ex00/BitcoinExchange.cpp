@@ -112,13 +112,11 @@ double BitcoinExchange::calculateExchangeRate(const std::string& date) {
 	std::map<std::string, double>::iterator it = this->prices.lower_bound(date);
 	if (it == prices.end() || it->first != date) {
 		if (it == prices.begin()) {
-			return 0; // TODO???
+			return 0;
 		}
 		it--;
 	}
-
-	double exchangeRate = it->second;
-	return exchangeRate;
+	return it->second;
 }
 
 void BitcoinExchange::calculateValue(const std::string& filename) {

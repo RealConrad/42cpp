@@ -159,7 +159,7 @@ void BitcoinExchange::calculateValue(const std::string& filename) {
 				std::istringstream iss(rateStr);
 				iss >> rate;
 				value = calculateExchangeRate(date);
-				std::cout << date << " => (" << trim(rateStr)  << " * " << value << ") => " << std::fixed << std::setprecision(2) << value * rate << std::endl;
+				std::cout << date << " => (" << trim(rateStr) << " * " << value << ") => " << std::fixed << std::setprecision(2) << value * rate << std::endl;
 				break;
 		}
 	}

@@ -6,18 +6,20 @@
 #include <string>
 #include <sstream>
 #include <cstdlib>
+#include <cctype>
+#include <stdexcept>
 
 class RPN {
     private:
-        std::stack<int> stack;
+        std::stack<double> stack;
     public:
         RPN();
         RPN(const RPN& other);
         RPN& operator=(const RPN& other);
         ~RPN();
 
-        void performOperations(const std::string& operation);
-        void executeExpression(int argc, char **argv);
+        void performOperations(char operation);
+        void executeExpression(const std::string& expr);
 };
 
 #endif

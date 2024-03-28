@@ -1,58 +1,74 @@
 #include "RPN.hpp"
-
+#include <exception>
 RPN::RPN() {}
 
 RPN::RPN(const RPN& other): stack(other.stack) {}
 
 RPN& RPN::operator=(const RPN& other) {
-    if (this != &other) {
-        this->stack = other.stack;
-    }
-    return *this;
+	if (this != &other) {
+		this->stack = other.stack;
+	}
+	return *this;
 }
 
 RPN::~RPN() {}
 
-void RPN::performOperations(const std::string& operation) {
-    if (this->stack.size() < 2) {
-        std::cout << "Error: Not enough operands" << std::endl;
-    }
-    int result = 0;
-    int operand2 = this->stack.top();
-    this->stack.pop();
-    int operand1 = this->stack.top();
-    this->stack.pop();
+void RPN::performOperations(char operation) {
+	if (this->stack.size() < 2)
+		throw std::invalid_argument("Not enough digits inside stack");
+	double result = 0;
+	double operand2 = this->stack.top();
+	this->stack.pop();
+	double operand1 = this->stack.top();
+	this->stack.pop();
 
-    if (operation == "+")
-        result = operand1 + operand2;
-    else if (operation == "-")
-        result = operand1 - operand2;
-    else if (operation == "*")
-        result = operand1 * operand2;
-    else if (operation == "/") {
-        if (operand2 == 0) {
-            std::cout << "Error: Cannot by 0" << std::endl;
-            exit(1);
-        }
-        result = operand1 / operand2;
-    } else {
-        std::cout << "Error: Invalid operation: " << operation << std::endl;
-        exit(1);
-    }
-    this->stack.push(result); // add the result back to the stack for the next operation
+	switch (operation) {
+		case '+':
+			result = operand1 + operand2;
+			break;
+		case '-':
+			result = operand1 - operand2;
+			break;
+		case '*':
+			result = operand1 * operand2;
+			break;
+		case '/':
+			if (operand2 == 0) {
+				throw std::invalid_argument("Cannot divide by 0");
+			}
+			result = operand1 / operand2;
+			break;
+		default:
+			throw std::invalid_argument("Unknown operation");
+	}
+	this->stack.push(result); // add the result back to the stack for the next operation
 }
 
-void RPN::executeExpression(int argc, char **argv) {
-    for (int i = 1; i < argc; i++) {
-        std::string token = argv[i];
-        if (token.length() == 1 && std::isdigit(token[0])) { // if false - we've hit an operand (+ - * /)
-            std::istringstream iss(token);
-            int operand;
-            iss >> operand;
-            this->stack.push(operand);
-        } else {
-            performOperations(token);
-        }
-    }
-    std::cout << "Result: " << this->stack.top() << std::endl;
+void RPN::executeExpression(const std::string& expr) {
+	bool last_char = true;
+
+	for (size_t i = 0; i < expr.size(); ++i) {
+		char ch = expr[i];
+		if (std::isspace(static_cast<unsigned char>(ch)))
+		{	
+			last_char = true;
+			continue;
+		}
+		else
+		{
+			if (last_char == false)
+				throw std::invalid_argument("Number is not a digit");
+			else
+				last_char = false;
+		}
+		if (std::isdigit(static_cast<unsigned char>(ch)) != 0) {
+			stack.push(ch - '0');
+		} else {
+			performOperations(ch);
+		}
+	}
+
+	if (stack.size() > 1)
+		throw std::invalid_argument("Invalid stack size");
+	std::cout << "Result: " << this->stack.top() << std::endl;
 }

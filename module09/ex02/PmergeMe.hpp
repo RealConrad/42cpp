@@ -13,45 +13,38 @@
 #include <algorithm> 
 
 
+
 class PmergeMe {
-    private:
-        std::vector<int> dataVector;
-        std::deque<int> dataDeque;
-        clock_t startTime;
-        clock_t endTime;
-        double elapsedTime;
+	private:
+		std::vector<int> vectorData;
+		std::deque<int> dequeData;
+		std::vector< std::pair<int, int> > vectorPair;
+		std::deque< std::pair<int, int> > dequePair;
+		int outlier;
+		bool hasOutlier;
+		// clock_t start;
+		// clock_t end;
+		// double elapsed;
 
-    public:
-        PmergeMe();
-        PmergeMe(const PmergeMe& other);
-        PmergeMe& operator=(const PmergeMe& other);
-        ~PmergeMe();
+		template <typename Pair>
+		void printPairs(const Pair& pair);
+		template <typename Container>
+		void printContainer(const Container& container);
 
-        /* ---------------------------- Member functions ---------------------------- */
-        void fordJohnsonSort();
-        void validateInput(int argc, char** argv);
-        std::vector<int> getVector() const;
+	public:
+		PmergeMe();
+		PmergeMe(const PmergeMe& other);
+		PmergeMe& operator=(const PmergeMe& other);
+		~PmergeMe();
 
+		void validateInput(int argc, char** argv);
+		void fordJohnsonSort();
 
-        /* -------------------------------- Templates ------------------------------- */
-        template <typename Container>
-        void printContainer(const Container& container) const {
-            typename Container::const_iterator it = container.begin();
-            while (it != container.end()) {
-                std::cout << *it << " ";
-                ++it;
-            }
-            std::cout << std::endl;
-        }
-
-        template<typename Container>
-        void pairAndSort(Container& container) {
-            for (std::size_t i = 0; i < container.size() - 1; i += 2) {
-                if (container[i] > container[i + 1]) {
-                    std::swap(container[i], container[i + 1]);
-                }
-            }
-        }
+		/* -------------------------------- Templates ------------------------------- */
+		template <typename Container, typename Pair>
+		void createAndSortPairs(Container& container, Pair& pair);
 };
+
+#include "PmergeMe.tpp"
 
 #endif

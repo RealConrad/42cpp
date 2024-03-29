@@ -2,21 +2,17 @@
 
 PmergeMe::PmergeMe() {}
 
-PmergeMe::PmergeMe(const PmergeMe& other): dataVector(other.dataVector), dataDeque(other.dataDeque) {}
+PmergeMe::PmergeMe(const PmergeMe& other): vectorData(other.vectorData), dequeData(other.dequeData) {}
 
 PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
     if (this != &other) {
-        this->dataDeque = other.dataDeque;
-        this->dataVector = other.dataVector;
+        this->vectorData = other.vectorData;
+        this->dequeData = other.dequeData;
     }
     return *this;
 }
 
 PmergeMe::~PmergeMe() {}
-
-std::vector<int> PmergeMe::getVector() const {
-    return this->dataVector;
-}
 
 void PmergeMe::validateInput(int argc, char** argv) {
    for (int i = 1; i < argc; i++) {
@@ -26,8 +22,8 @@ void PmergeMe::validateInput(int argc, char** argv) {
         if (iss.fail() || num < std::numeric_limits<int>::min() || num > std::numeric_limits<int>::max()) {
             throw std::invalid_argument("Invalid input");
         }
-        this->dataVector.push_back(static_cast<int>(num));
-        this->dataDeque.push_back(static_cast<int>(num));
+        this->vectorData.push_back(static_cast<int>(num));
+        this->dequeData.push_back(static_cast<int>(num));
     }
 }
 
@@ -50,3 +46,16 @@ function FordJohnsonSort(list) {
     return sortedList
 }
 */
+
+void PmergeMe::fordJohnsonSort() {
+	// start sorting vector first
+	createAndSortPairs(this->vectorData, this->vectorPair);
+	printPairs(this->vectorPair);
+	
+
+
+
+
+
+	// start sorting deque
+}

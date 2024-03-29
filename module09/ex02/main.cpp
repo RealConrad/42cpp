@@ -10,11 +10,10 @@ int main(int argc, char **argv) {
     try {
         PmergeMe me;
         me.validateInput(argc, argv);
-        std::cout << "Before: ";
-        me.printContainer(me.getVector());
-
+		me.fordJohnsonSort();
     } catch (const std::exception& e) {
         std::cout << "Error: " << e.what() << std::endl;
     }
+
     return 0;
 }

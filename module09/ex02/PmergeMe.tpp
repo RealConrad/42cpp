@@ -56,28 +56,29 @@ void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 
 template <typename Container>
 void PmergeMe::insertUsingSequence(Container& firstChain, Container& secondChain) {
-    (void)firstChain;
-    (void)secondChain;
-    // initJacobsthal(secondChain.size() + 1);
-    // for (size_t i = 0; i < secondChain.size(); i++) {
-    //     // The index for the Jacobsthal sequence, which determines the order of insertion
-    //     size_t jacobIndex = jacobsthalNumbers[i];
-        
-    //     // If the Jacobsthal index is larger than the current size of the secondChain,
-    //     // it means we have no elements left in secondChain
-    //     if (jacobIndex >= secondChain.size()) {
-    //         break;
-    //     }
+    initJacobsthal(secondChain.size() + 1);
+    typename Container::iterator insertPos = firstChain.begin();
+    for (size_t i = 0; i < secondChain.size(); i++) {
+        // The index for the Jacobsthal sequence, which determines the order of insertion
+        size_t jacobIndex = jacobsthalNumbers[i];
 
-    //     // Retrieve the element from the secondChain based on Jacobsthal order
-    //     int elementToInsert = secondChain[jacobIndex];
+        // Advance the insertPos iterator by jacobIndex positions
+        std::advance(insertPos, jacobIndex);
 
-    //     // Find the position in the firstChain where this element should be inserted
-    //     typename Container::iterator insertPos = std::upper_bound(firstChain.begin(), firstChain.end(), elementToInsert);
+        // If we've reached the end of the firstChain, reset insertPos to the beginning
+        if (insertPos == firstChain.end()) {
+            insertPos = firstChain.begin();
+        }
 
-    //     // Insert the element at the correct sorted position in the firstChain
-    //     firstChain.insert(insertPos, elementToInsert);
-    // }
+        // Find the position in the firstChain where this element should be inserted
+        insertPos = std::upper_bound(firstChain.begin(), insertPos, secondChain[i]);
+
+        // Insert the element from the secondChain at the correct position in the firstChain
+        firstChain.insert(insertPos, secondChain[i]);
+
+        // Reset insertPos to the beginning of the firstChain for the next iteration
+        insertPos = firstChain.begin();
+    }
 }
 
 template <typename Container, typename PairContainer>

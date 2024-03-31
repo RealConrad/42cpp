@@ -57,36 +57,33 @@ void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 template<typename Container>
 void PmergeMe::insertUsingSequence(Container& firstChain, Container& secondChain) {
     // Ensure Jacobsthal sequence is large enough to include the potential outlier.
-    initJacobsthal(secondChain.size());
+    initJacobsthal(secondChain.size() + 1);
+
+    std::cout << "Jacobsthal Numbers: " << std::endl;
+    printContainer(this->jacobsthalNumbers);
 
     int offset = 0;
     int prev_jcb_number = -1;
 
-    for (size_t j = 0; j < jacobsthalNumbers.size(); ++j) {
+    for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
         int jcb_number = jacobsthalNumbers[j];
 
-        if (jcb_number >= static_cast<int>(secondChain.size()) || jcb_number == prev_jcb_number) {
+        if (jcb_number > static_cast<int>(secondChain.size())) {
+            std::cout << "Breaking\tJCB_NUM\t" << jcb_number << "\t\tChain Size:\t" << secondChain.size() << std::endl;
             continue;
         }
 
-        for (int i = jcb_number; i > prev_jcb_number; --i) {
+         for (int i = jcb_number; i > prev_jcb_number; i--) {
             int elementToInsert = secondChain[i];
             typename Container::iterator insertPos = std::lower_bound(
                 firstChain.begin(), firstChain.begin() + i + offset, elementToInsert);
+            std::cout << "Inseting... " << elementToInsert << " at position " << insertPos - firstChain.begin() << std::endl;
             firstChain.insert(insertPos, elementToInsert);
             offset++;
         }
         prev_jcb_number = jcb_number;
     }
-
-    // After all Jacobsthal-based insertions, check if there is an outlier to insert.
-    if (this->hasOutlier) {
-         typename Container::iterator insertPos = std::lower_bound(firstChain.begin(), firstChain.end(), this->outlier);
-        firstChain.insert(insertPos, this->outlier);
-    }
 }
-
-
 
 template <typename Container, typename PairContainer>
 void PmergeMe::splitAndMerge(const PairContainer& pairs) {
@@ -99,12 +96,12 @@ void PmergeMe::splitAndMerge(const PairContainer& pairs) {
     if (this->hasOutlier) {
         secondChain.push_back(this->outlier);
     }
+
     std::cout << "First chain: ";
     printContainer(firstChain);
 
     std::cout << "Second chain: ";
     printContainer(secondChain);
-
     insertUsingSequence(firstChain, secondChain);
 
     std::cout << "Final Result: ";

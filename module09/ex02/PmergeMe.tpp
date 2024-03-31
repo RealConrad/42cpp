@@ -58,17 +58,13 @@ template<typename Container>
 void PmergeMe::insertUsingSequence(Container& firstChain, Container& secondChain) {
     initJacobsthal(secondChain.size());
 
-    // Instead of using a sorted order based on Jacobsthal numbers,
-    // we'll insert directly based on them, considering the adjustment
-    // for previous insertions.
-
     // Offset keeps track of how much the original positions have been shifted by insertions.
     int offset = 0;
     // Keep track of the last Jacobsthal number used to ensure we do not duplicate insertions.
     int prev_jcb_number = -1;
 
     for (size_t j = 0; j < jacobsthalNumbers.size(); ++j) {
-        // Get the current Jacobsthal number, which we'll use as an index.
+        // Get the current Jacobsthal number, used as index
         int jcb_number = jacobsthalNumbers[j];
 
         // If the Jacobsthal number is larger than the size of secondChain, or if it's a repeat, skip it.
@@ -82,7 +78,7 @@ void PmergeMe::insertUsingSequence(Container& firstChain, Container& secondChain
             int elementToInsert = secondChain[i];
 
             // Find the correct position in the firstChain where this element should be inserted.
-            // We adjust the search space within firstChain to account for the shifted elements due to insertions.
+            // Adjust the search space within firstChain to account for the shifted elements due to prev insertions.
             typename Container::iterator insertPos = std::lower_bound(firstChain.begin(), firstChain.begin() + i + offset, elementToInsert);
 
             // Insert the element from secondChain into the firstChain at the found position.
@@ -91,9 +87,12 @@ void PmergeMe::insertUsingSequence(Container& firstChain, Container& secondChain
             // Increase the offset for each insertion made.
             ++offset;
         }
-
         // Update prev_jcb_number to the current Jacobsthal number after processing it.
         prev_jcb_number = jcb_number;
+    }
+    if (this->hasOutlier) {
+        typename Container::iterator insertPos = std::upper_bound(firstChain.begin(), firstChain.end(), this->outlier);
+        firstChain.insert(insertPos, this->outlier);
     }
 }
 

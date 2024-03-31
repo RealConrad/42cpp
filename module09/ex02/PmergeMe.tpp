@@ -56,42 +56,32 @@ void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 
 template<typename Container>
 void PmergeMe::insertUsingSequence(Container& firstChain, Container& secondChain) {
+    // Ensure Jacobsthal sequence is large enough to include the potential outlier.
     initJacobsthal(secondChain.size());
 
-    // Offset keeps track of how much the original positions have been shifted by insertions.
     int offset = 0;
-    // Keep track of the last Jacobsthal number used to ensure we do not duplicate insertions.
     int prev_jcb_number = -1;
 
     for (size_t j = 0; j < jacobsthalNumbers.size(); ++j) {
-        // Get the current Jacobsthal number, used as index
         int jcb_number = jacobsthalNumbers[j];
 
-        // If the Jacobsthal number is larger than the size of secondChain, or if it's a repeat, skip it.
         if (jcb_number >= static_cast<int>(secondChain.size()) || jcb_number == prev_jcb_number) {
             continue;
         }
 
-        // Iterate from the current Jacobsthal number down to the last used one (or zero).
         for (int i = jcb_number; i > prev_jcb_number; --i) {
-            // Get the element to insert from secondChain.
             int elementToInsert = secondChain[i];
-
-            // Find the correct position in the firstChain where this element should be inserted.
-            // Adjust the search space within firstChain to account for the shifted elements due to prev insertions.
-            typename Container::iterator insertPos = std::lower_bound(firstChain.begin(), firstChain.begin() + i + offset, elementToInsert);
-
-            // Insert the element from secondChain into the firstChain at the found position.
+            typename Container::iterator insertPos = std::lower_bound(
+                firstChain.begin(), firstChain.begin() + i + offset, elementToInsert);
             firstChain.insert(insertPos, elementToInsert);
-
-            // Increase the offset for each insertion made.
-            ++offset;
+            offset++;
         }
-        // Update prev_jcb_number to the current Jacobsthal number after processing it.
         prev_jcb_number = jcb_number;
     }
+
+    // After all Jacobsthal-based insertions, check if there is an outlier to insert.
     if (this->hasOutlier) {
-        typename Container::iterator insertPos = std::upper_bound(firstChain.begin(), firstChain.end(), this->outlier);
+         typename Container::iterator insertPos = std::lower_bound(firstChain.begin(), firstChain.end(), this->outlier);
         firstChain.insert(insertPos, this->outlier);
     }
 }
@@ -109,7 +99,15 @@ void PmergeMe::splitAndMerge(const PairContainer& pairs) {
     if (this->hasOutlier) {
         secondChain.push_back(this->outlier);
     }
+    std::cout << "First chain: ";
+    printContainer(firstChain);
+
+    std::cout << "Second chain: ";
+    printContainer(secondChain);
+
     insertUsingSequence(firstChain, secondChain);
+
+    std::cout << "Final Result: ";
     printContainer(firstChain);
 }
 

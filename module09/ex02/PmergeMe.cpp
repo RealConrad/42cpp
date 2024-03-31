@@ -27,35 +27,29 @@ void PmergeMe::validateInput(int argc, char** argv) {
     }
 }
 
-/*
-function FordJohnsonSort(list) {
-    if list.size <= 1:
-        return list
-
-    # Step 1: Initial Pairing and Sorting
-    pairedList = pairAndSort(list)
-
-    # Step 2: Recursive Merge-Sort with Insertion Preparation
-    sortedList = recursiveMergeSort(pairedList)
-
-    # Step 3: Insertion of Remaining Elements
-    for each unpaired element in list:
-        position = optimizedBinarySearch(sortedList, element)
-        insert(sortedList, element, position)
-
-    return sortedList
+bool PmergeMe::comparePairsByFirst(const std::pair<int, int>& a, const std::pair<int, int>& b) {
+    return a.first < b.first;
 }
-*/
+
+/// @brief // J(n)=J(n−1)+2⋅J(n−2) with initial values of // J(0)=0 and J(1)=1
+/// @param numElements 
+void PmergeMe::initJacobsthal(size_t numElements) {
+    this->jacobsthalNumbers.clear();
+    this->jacobsthalNumbers.push_back(0); // J(0) = 0
+    if (numElements > 1) {
+        this->jacobsthalNumbers.push_back(1); // J(1) = 1
+    }
+    for (size_t i = 2; i < numElements; ++i) {
+        // J(n) = J(n−1)+2⋅J(n−2)
+        int nextNumber = this->jacobsthalNumbers[i - 1] + 2 * this->jacobsthalNumbers[i - 2];
+        this->jacobsthalNumbers.push_back(nextNumber);
+    }
+}
 
 void PmergeMe::fordJohnsonSort() {
-	// start sorting vector first
+	// vector
 	createAndSortPairs(this->vectorData, this->vectorPair);
-	printPairs(this->vectorPair);
-	
+    splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);	
 
-
-
-
-
-	// start sorting deque
+	// deque
 }

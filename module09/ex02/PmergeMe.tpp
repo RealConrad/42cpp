@@ -70,10 +70,8 @@ void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
 
 	for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
 		int jcb_number = jacobsthalNumbers[j] + 1;
-		std::cout << "JSCB NUM: " << jcb_number << std::endl;;
 
 		if (jcb_number > static_cast<int>(pendChain.size())) {
-			std::cout << "Breaking\tJCB_NUM\t" << jcb_number << "\t\tChain Size:\t" << pendChain.size() << std::endl;
 			break;
 		}
 
@@ -98,7 +96,7 @@ template<typename Container>
 void PmergeMe::printResult(const Container& container) {
 	double elapsedTime = 0;
 
-	elapsedTime = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+	elapsedTime = (static_cast<double>(end - start) / CLOCKS_PER_SEC) * 1000;
 	
 	if (this->type == VECTOR) {
 		std::cout << "===== VECTOR =====" << std::endl;
@@ -106,14 +104,14 @@ void PmergeMe::printResult(const Container& container) {
 		printContainer(this->vectorData);
 		std::cout << "After: ";
 		printContainer(container);
-		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " seconds" << std::endl;
+		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " ms" << std::endl;
 	} else if (this->type == DEQUE) {
 		std::cout << "===== DEQUE =====" << std::endl;
 		std::cout << "Before: ";
 		printContainer(this->dequeData);
 		std::cout << "After: ";
 		printContainer(container);
-		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " seconds" << std::endl;
+		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " ms" << std::endl;
 	}
 }
 
@@ -128,19 +126,9 @@ void PmergeMe::splitAndMerge(const PairContainer& pairs) {
 	if (this->hasOutlier) {
 		pendChain.push_back(this->outlier);
 	}
-	std::cout << "Pairs: " << std::endl;
-	printPairs(pairs);
-	std::cout << "First chain: ";
-	printContainer(mainChain);
-	std::cout << "Second chain: ";
-	printContainer(pendChain);
-
 	insertToMainChain(mainChain, pendChain);
-
-	std::cout << "Final Result: ";
-	printContainer(mainChain);
 	this->end = clock();
-	// printResult(mainChain);
+	printResult(mainChain);
 }
 
 #endif

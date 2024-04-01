@@ -12,6 +12,10 @@
 #include <limits>
 #include <algorithm> 
 
+enum ContainerType {
+	VECTOR,
+	DEQUE
+};
 class PmergeMe {
 	private:
 		std::vector<int> vectorData;
@@ -19,14 +23,16 @@ class PmergeMe {
 		std::vector<std::pair<int, int> > vectorPair;
     	std::deque<std::pair<int, int> > dequePair;
 		std::vector<int> jacobsthalNumbers;
+		std::vector<size_t> insertionPositions;
 		int outlier;
 		bool hasOutlier;
-		// clock_t start;
-		// clock_t end;
-		// double elapsed;
+		clock_t start;
+		clock_t end;
+		ContainerType type;
 
 		static bool comparePairsByFirst(const std::pair<int, int>& a, const std::pair<int, int>& b);
 		void initJacobsthal(size_t numElements);
+		void generateInsertionPositions(size_t numElements);
 
 		/* -------------------------------- Templates ------------------------------- */
 		template <typename Container, typename Pair>
@@ -36,11 +42,13 @@ class PmergeMe {
 		void splitAndMerge(const PairContainer& pairs);
 		
 		template <typename Container>
-		void insertUsingSequence(Container& firstChain, Container& secondChain);
+		void insertToMainChain(Container& mainChain, Container& pendChain);
+		template <typename Container>
+		void printResult(const Container& container);
 		
+		// Debug
 		template <typename Pair>
 		void printPairs(const Pair& pair);
-
 		template <typename Container>
 		void printContainer(const Container& container);
 	public:

@@ -39,17 +39,25 @@ void PmergeMe::initJacobsthal(size_t numElements) {
     if (numElements > 1) {
         this->jacobsthalNumbers.push_back(1); // J(1) = 1
     }
-    for (size_t i = 2; i < numElements; ++i) {
+    for (size_t i = 2; i < numElements; i++) {
         // J(n) = J(n−1)+2⋅J(n−2)
         int nextNumber = this->jacobsthalNumbers[i - 1] + 2 * this->jacobsthalNumbers[i - 2];
+		if (static_cast<size_t>(nextNumber) > numElements)
+			break ;
         this->jacobsthalNumbers.push_back(nextNumber);
     }
 }
 
 void PmergeMe::fordJohnsonSort() {
 	// vector
+	this->type = VECTOR;
+	this->start = clock();
 	createAndSortPairs(this->vectorData, this->vectorPair);
     splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);	
 
 	// deque
+	this->type = DEQUE;
+	this->start = clock();
+	createAndSortPairs(this->dequeData, this->dequePair);
+    splitAndMerge<std::deque<int>, std::deque<std::pair<int, int> > >(this->dequePair);	
 }

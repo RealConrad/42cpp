@@ -5,10 +5,14 @@
 
 template <typename Container>
 void PmergeMe::printContainer(const Container& container) {
+	int counter = 0;
 	typename Container::const_iterator it = container.begin();
 	while (it != container.end()) {
+		if (counter == 100)
+			break ;
 		std::cout << *it << " ";
 		++it;
+		counter++;
 	}
 	std::cout << std::endl;
 }
@@ -55,57 +59,76 @@ void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 }
 
 template<typename Container>
-void PmergeMe::insertUsingSequence(Container& firstChain, Container& secondChain) {
-    // Ensure Jacobsthal sequence is large enough to include the potential outlier.
-    initJacobsthal(secondChain.size() + 1);
+void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
+    for (size_t i = 0; i < pendChain.size(); i++) {
+        int elementToInsert = pendChain[i];
+        size_t low = 0;
+		size_t high = mainChain.size(); // Set high to the current size of mainChain
 
-    std::cout << "Jacobsthal Numbers: " << std::endl;
-    printContainer(this->jacobsthalNumbers);
-
-    int offset = 0;
-    int prev_jcb_number = -1;
-
-    for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
-        int jcb_number = jacobsthalNumbers[j];
-
-        if (jcb_number > static_cast<int>(secondChain.size())) {
-            std::cout << "Breaking\tJCB_NUM\t" << jcb_number << "\t\tChain Size:\t" << secondChain.size() << std::endl;
-            continue;
+        // Perform a manual binary search within mainChain
+        while (low < high) {
+            size_t mid = low + (high - low) / 2;
+            if (mainChain[mid] < elementToInsert) {
+                low = mid + 1; // Search in the right half
+            } else {
+                high = mid; // Search in the left half
+            }
         }
-
-         for (int i = jcb_number; i > prev_jcb_number; i--) {
-            int elementToInsert = secondChain[i];
-            typename Container::iterator insertPos = std::lower_bound(
-                firstChain.begin(), firstChain.begin() + i + offset, elementToInsert);
-            std::cout << "Inseting... " << elementToInsert << " at position " << insertPos - firstChain.begin() << std::endl;
-            firstChain.insert(insertPos, elementToInsert);
-            offset++;
-        }
-        prev_jcb_number = jcb_number;
+        // At this point, low is the index where elementToInsert should be placed
+        typename Container::iterator insertPos = mainChain.begin() + low;
+        mainChain.insert(insertPos, elementToInsert);
     }
+}
+
+
+
+template<typename Container>
+void PmergeMe::printResult(const Container& container) {
+	double elapsedTime = 0;
+
+	elapsedTime = static_cast<double>(end - start) / CLOCKS_PER_SEC;
+	
+	if (this->type == VECTOR) {
+		std::cout << "===== VECTOR =====" << std::endl;
+		std::cout << "Before: ";
+		printContainer(this->vectorData);
+		std::cout << "After: ";
+		printContainer(container);
+		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " seconds" << std::endl;
+	} else if (this->type == DEQUE) {
+		std::cout << "===== DEQUE =====" << std::endl;
+		std::cout << "Before: ";
+		printContainer(this->dequeData);
+		std::cout << "After: ";
+		printContainer(container);
+		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " seconds" << std::endl;
+	}
 }
 
 template <typename Container, typename PairContainer>
 void PmergeMe::splitAndMerge(const PairContainer& pairs) {
-    Container firstChain;
-    Container secondChain;
+    Container mainChain;
+    Container pendChain;
     for (typename PairContainer::const_iterator it = pairs.begin(); it != pairs.end(); ++it) {
-        firstChain.push_back(it->first);
-        secondChain.push_back(it->second);
+        mainChain.push_back(it->first);
+        pendChain.push_back(it->second);
     }
     if (this->hasOutlier) {
-        secondChain.push_back(this->outlier);
+        pendChain.push_back(this->outlier);
     }
+	// std::cout << "Pairs: " << std::endl;
+	// printPairs(pairs);
+    // std::cout << "First chain: ";
+    // printContainer(mainChain);
+    // std::cout << "Second chain: ";
+    // printContainer(pendChain);
 
-    std::cout << "First chain: ";
-    printContainer(firstChain);
+    insertToMainChain(mainChain, pendChain);
 
-    std::cout << "Second chain: ";
-    printContainer(secondChain);
-    insertUsingSequence(firstChain, secondChain);
-
-    std::cout << "Final Result: ";
-    printContainer(firstChain);
+    // std::cout << "Final Result: ";
+    // printContainer(mainChain);
+	this->end = clock();
+	printResult(mainChain);
 }
 
 #endif

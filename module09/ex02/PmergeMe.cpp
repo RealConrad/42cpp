@@ -56,8 +56,8 @@ void PmergeMe::fordJohnsonSort() {
     splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);	
 
 	// deque
-	this->type = DEQUE;
-	this->start = clock();
-	createAndSortPairs(this->dequeData, this->dequePair);
-    splitAndMerge<std::deque<int>, std::deque<std::pair<int, int> > >(this->dequePair);	
+	// this->type = DEQUE;
+	// this->start = clock();
+	// createAndSortPairs(this->dequeData, this->dequePair);
+    // splitAndMerge<std::deque<int>, std::deque<std::pair<int, int> > >(this->dequePair);	
 }

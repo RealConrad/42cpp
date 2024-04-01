@@ -29,21 +29,16 @@ class MutantStack: public std::stack<T, Container> { // inherit from std::stack 
 		}
 		~MutantStack() {}
 
-		// Inherit member Expose iterators of std::stack
+		// refers to the iterator type of the underlying container
 		typedef typename Container::iterator iterator;
-		typedef typename Container::const_iterator const_iterator;
-
+		
+		// returns an iterator pointing to the "first" element of MutantStack
 		iterator begin() {
 			return this->c.begin();
 		}
+		// returns an iterator pointing to the "end" of the MutantStack
 		iterator end() {
 			return this->c.end();
-		}
-		const_iterator end() const {
-			return this->c.end();
-		}
-		const_iterator begin() const {
-			return this->c.begin();
 		}
 };
 

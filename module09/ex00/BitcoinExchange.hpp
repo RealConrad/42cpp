@@ -6,6 +6,8 @@
 #include <string>
 #include <map>
 #include <sstream>
+#include <limits>
+#include <iomanip> 
 
 enum valueType {
 	ERR_TOO_LARGE,

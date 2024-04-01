@@ -1,6 +1,5 @@
 #include "BitcoinExchange.hpp"
 
-
 /* -------------------------------------------------------------------------- */
 /*                              Helper functions                              */
 /* -------------------------------------------------------------------------- */
@@ -106,7 +105,7 @@ valueType BitcoinExchange::isValidValue(const std::string& rateStr) {
 		return ERR_NAN;
 	if (rate < 0)
 		return ERR_NEGATIVE;
-	if (rate > INT_MAX)
+	if (rate > std::numeric_limits<int>::max())
 		return ERR_TOO_LARGE;
 	return VALID;
 }

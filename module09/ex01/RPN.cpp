@@ -15,7 +15,7 @@ RPN::~RPN() {}
 
 void RPN::performOperations(char operation) {
 	if (this->stack.size() < 2)
-		throw std::invalid_argument("Not enough digits inside stack");
+		throw std::invalid_argument("Invalid input or not enough digits inside stack");
 	double result = 0;
 	double operand2 = this->stack.top();
 	this->stack.pop();

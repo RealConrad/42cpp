@@ -112,13 +112,18 @@ valueType BitcoinExchange::isValidValue(const std::string& rateStr) {
 }
 
 double BitcoinExchange::calculateExchangeRate(const std::string& date) {
+	// The lower bound is the first element that is not considered to go before 'date', meaning it is either equal to 'date' or the first date after 'date'.
 	std::map<std::string, double>::iterator it = this->prices.lower_bound(date);
+	// Check if the iterator points to the end of the map or the date of the current iterator does not match the given date.
+	// This means either the given date is after all dates in the map or it falls between two existing dates.
 	if (it == this->prices.end() || it->first != date) {
+		// If the given date is before the earliest date in the map, no exchange rate available, return 0.
 		if (it == this->prices.begin()) {
 			return 0;
 		}
 		it--;
 	}
+	// return exchange rate
 	return it->second;
 }
 

@@ -48,4 +48,5 @@ if __name__ == "__main__":
         print("Please provide a string of numbers as an argument.")
 
 #USGAE:
-# $>python check_sorted.py "numbers separated by space"
+#NOTE: MUST BE IN STRING
+# $>python check_sorted.py <"numbers separated by space">

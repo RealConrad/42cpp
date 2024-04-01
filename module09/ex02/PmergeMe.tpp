@@ -8,7 +8,7 @@ void PmergeMe::printContainer(const Container& container) {
 	int counter = 0;
 	typename Container::const_iterator it = container.begin();
 	while (it != container.end()) {
-		if (counter == 100) {
+		if (counter == 20) {
 			std::cout << " [....] ";
 			break ;
 		}
@@ -63,11 +63,7 @@ void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 
 template<typename Container>
 void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
-	// Ensure Jacobsthal sequence is large enough to include the potential outlier.
 	initJacobsthal(pendChain.size());
-
-	// std::cout << "Jacobsthal Numbers: " << std::endl;
-	// printContainer(this->jacobsthalNumbers);
 
 	int offset = 0;
 	int prev_jcb_number = -1;
@@ -85,7 +81,6 @@ void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
 			int elementToInsert = pendChain[i];
 			typename Container::iterator insertPos = std::lower_bound(
 				mainChain.begin(), mainChain.begin() + i + offset, elementToInsert);
-			// std::cout << "Inseting... " << elementToInsert << " at position " << insertPos - mainChain.begin() << std::endl;
 			mainChain.insert(insertPos, elementToInsert);
 			offset++;
 		}
@@ -98,28 +93,6 @@ void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
 		mainChain.insert(insertPos, elementToInsert);
 	}
 }
-
-// template<typename Container>
-// void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
-//     for (size_t i = 0; i < pendChain.size(); i++) {
-//         int elementToInsert = pendChain[i];
-//         size_t low = 0;
-// 		size_t high = mainChain.size(); // Set high to the current size of mainChain
-
-//         // Perform a manual binary search within mainChain
-//         while (low < high) {
-//             size_t mid = low + (high - low) / 2;
-//             if (mainChain[mid] < elementToInsert) {
-//                 low = mid + 1; // Search in the right half
-//             } else {
-//                 high = mid; // Search in the left half
-//             }
-//         }
-//         // At this point, low is the index where elementToInsert should be placed
-//         typename Container::iterator insertPos = mainChain.begin() + low;
-//         mainChain.insert(insertPos, elementToInsert);
-//     }
-// }
 
 template<typename Container>
 void PmergeMe::printResult(const Container& container) {

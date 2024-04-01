@@ -18,7 +18,7 @@ def is_sorted_ascending(input_str):
 			duplicates_found = True
 		else:
 			unique_numbers.add(numbers[i])
-		
+
 		# Check if the current number is greater than the next one
 		if numbers[i] > numbers[i + 1]:
 			is_sorted = False

@@ -72,18 +72,21 @@ bool BitcoinExchange::isValidDate(const std::string& date) {
 	if (!isOnlyDigits(temp))
 		return false;
 	std::istringstream(temp) >> year;
+	temp.clear();
 
 	// Get month
 	std::getline(dateStream, temp, '-');
 	if (!isOnlyDigits(temp))
 		return false;
 	std::istringstream(temp) >> month;
+	temp.clear();
 
 	// Get day
 	std::getline(dateStream, temp);
 	if (!isOnlyDigits(temp))
 		return false;
 	std::istringstream(temp) >> day;
+	temp.clear();
 
 	// Check valid date ranges
 	if (year < 0 || year > 9999)
@@ -110,8 +113,8 @@ valueType BitcoinExchange::isValidValue(const std::string& rateStr) {
 
 double BitcoinExchange::calculateExchangeRate(const std::string& date) {
 	std::map<std::string, double>::iterator it = this->prices.lower_bound(date);
-	if (it == prices.end() || it->first != date) {
-		if (it == prices.begin()) {
+	if (it == this->prices.end() || it->first != date) {
+		if (it == this->prices.begin()) {
 			return 0;
 		}
 		it--;

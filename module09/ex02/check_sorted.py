@@ -49,4 +49,4 @@ if __name__ == "__main__":
 
 #USGAE:
 #NOTE: MUST BE IN STRING
-# $>python check_sorted.py <"numbers separated by space">
+# $>python check_sorted.py "numbers separated by space"

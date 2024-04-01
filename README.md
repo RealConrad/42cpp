@@ -34,6 +34,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Type casting (Module06)](#type-casting-module06)
 - [Templates (Module07)](#templates-module07)
 - [Templated containers, iterators, algorithms (Module08)](#templated-containers-iterators-algorithms-module08)
+- [Ford Johnson Algo, and more containers (Module09)](#ford-johnson-algo-and-more-containers-module09)
 - [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
@@ -896,6 +897,81 @@ OUTPUT:
 10 20 30 40
 ```
 
+# Ford Johnson Algo, and more containers (Module09)
+
+## What is the Ford Johnson Algo?
+The Ford-Johnson algorithm, also known as the Merge-Insertion sort, is an algorithm is best known for its efficieny when compared to comparison-based algorithms like QuickSort, HeapSort, or MergeSort for small to moderately large datasets. Its average and worst-case time complexity O(n_log_n) is similar to other efficient sorting algorithms, but it has lower overhead and performs fewer comparisons in practice for small arrays.
+
+## Basic Overview/Implementation
+For example purposes I use the numbers: `30 42 28 67 75 41 49 16 45`
+1. **Divide the List**: The algorithm starts by dividing the list into `pairs`. If there's an odd number of elements, one element is temporarily set aside. So our numbers would become: 
+```
+(30, 42) (28, 67) (75, 41) (49, 16) 45 (45=remainder)
+```
+
+2. **Initial Sorting of Pairs**: Each pair of elements is sorted so that each `pair` is in the format `(largerNum, smallerNum)`. So our numbers would become: 
+```
+(42, 30) (67, 28) (75, 41) (49, 16) 45 (45=remainder)
+```
+
+3. **Split the pairs:** Here we will split the `pairs` into 2 different containers, the `mainChain` which contains the `pair->first` values and `pendchain` which contains the `pair->second`. We can add the `remainder` to the `secondChain`. So our numbers would look like this:
+```
+mainChain = 42 67 75 49
+secondChain = 30 28 41 16 45
+```
+
+4. **Generate Jacobsthal number sequence**: [Generate Jacobsthal](#https://en.wikipedia.org/wiki/Jacobsthal_number) based on `secondChain.size()`. Make sure to not generate numbers higher than the `secondChain.size()`. So it would look something like:
+```cpp
+// PSEUDO CODE:
+generateJacobsthalNumbers() {
+	// Init first values for Jacobsthal number sequence before loop
+	while (condition) {
+		nextNumber = JACOBSTHAL_FORMULA;
+		if (nextNumber > secondChain.size())
+			// stop generating
+		else
+			// else add to a container
+	}
+}
+```
+
+5. **Find insertion based on Jacobsthal numbers**: Based on the numbers generated, you can use it to determine the order of insertion for `secondChain` into `mainchain`. Make sure you catch ALL numbers inside `secondChain`. The Jacobsthal numbers are utilized in the sorting algorithm to efficiently determine the optimal insertion points for merging elements from a pending chain (`pendChain`) into a main chain (`mainChain`), while maintaining the sorted order. This method leverages the unique properties of Jacobsthal numbers to minimize the number of comparisons needed during the insertion process. Specifically, by calculating and following the pattern provided by these numbers, the algorithm optimizes the positions where elements should be inserted into the main chain. This results in a more efficient sorting process, as it reduces the computational overhead associated with finding the correct insertion points in a sorted sequence, especially compared to a straightforward linear search or unoptimized insertion strategy. \
+**So Essentially:**
+For each Jacobsthal number, it inserts elements from `pendChain` into `mainChain` at positions determined by the current Jacobsthal number, adjusted by the `offset`. The insertion positions are found using `std::lower_bound`, which performs a binary search to find the correct spot efficiently.
+```cpp
+// PSEUDO CODE FROM MY SOLUTION:
+void insertToMainChain(mainChain, pendChain) {
+
+    Initialize Jacobsthal numbers for the size of pendChain
+    
+    var offset
+    var prev_jcb_numbers
+    
+    For each jacobsthalNumber in jacobsthalNumbers
+        Calculate jcb_number as jacobsthalNumber + 1
+        
+        If jcb_number is greater than the size of pendChain
+            Exit
+        
+        For i from jcb_number down to prev_jcb_number + 1
+            Get ElementToInsert
+            Find insertPos in mainChain
+            Insert elementToInsert into mainChain at insertPos + offset + i
+            Increment offset
+        
+        Update prev_jcb_number to jcb_number
+}
+```
+
+6. **Congrats!** The `mainchain` now contains the sorted number sequence!
+
+**_NOTE:_** You could also potentially use a simple binary insertion algo instead of Jacobsthal to find the insertion position. According to the [wiki](#https://en.wikipedia.org/wiki/Merge-insertion_sort) page it does not mention Jacobsthal at all. However when referencing a few resources, they all use Jacobsthal which is why I decided to do the same.
+
+## Resources
+- [Basic overview of Ford Johnson Algo](#https://link.springer.com/article/10.1007/s00224-020-09987-4)
+- [Wiki page on Ford Johnson Algo](#https://en.wikipedia.org/wiki/Merge-insertion_sort)
+- [Jacobsthal number sequence](#https://en.wikipedia.org/wiki/Jacobsthal_number)
+- [Good Ford johnson illustrations](#https://github.com/nerraou/Ford-Johnson-algorithm/tree/master)
 
 # General Concepts
 ## Declaring functions as const

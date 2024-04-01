@@ -806,36 +806,32 @@ Example on how to template a container
 template<typename T, size_t N> // Template
 class FixedSizeArray {
 	private:
-	    T data[N]; // Array of type T with fixed size N
-	    size_t size; // Current number of elements (not exceeding N)
-	
+		T data[N]; // Array of type T with fixed size N
+		size_t size; // Current number of elements (not exceeding N)
+
 	public:
-	    FixedSizeArray() : size(0) {}
-	
-	    // Add an element to the container. If the container is full, the operation is ignored.
-	    void add(const T& element) {
-	        if (this->size < N) {
-	            this->data[this->size_] = element;
-	            this->size++;
-	        } else {
-	            // Handle the case when the array is full
-	            std::cerr << "Error: Attempt to add to a full container." << std::endl;
-	        }
-	    }
-	
-	    // Access elements by index
-	    T& operator[](size_t index) {
-		if (index < 0 || index > this->size) {
-		    std::cerr << "Error: Invalid Index." << std::endl;
-		    return;
+		FixedSizeArray() : size(0) {}
+
+		// Add an element to the container. If the container is full, the operation is ignored.
+		void add(const T& element) {
+			if (this->size < N) {
+				this->data[this->size] = element;
+				this->size++;
+			} else {
+				// Handle the case when the array is full
+				std::cerr << "Error: Attempt to add to a full container." << std::endl;
+			}
 		}
-	        return this->data[index];
-	    }
-	
-	    // Returns the number of elements in the container
-	    size_t getSize() const {
-	        return this->size;
-	    }
+
+		// Access elements by index
+		T& operator[](size_t index) {
+			return this->data[index];
+		}
+
+		// Returns the number of elements in the container
+		size_t getSize() const {
+			return this->size;
+		}
 };
 
 int main() {
@@ -859,11 +855,10 @@ int main() {
 }
 
 OUTPUT:
-First Element (int): 1
-Second Element (int): 2
-
-First Element (string): Hello
-Second Element (string): World
+First element (int): 1
+Second element (int): 2
+First element (string): Hello
+Second element (string): World
 ```
 
 ### What are iterators

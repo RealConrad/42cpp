@@ -874,8 +874,6 @@ They are a means to navigate through the elements of a container. An iterator is
 
 - **Container Compatibility**: Direct indexing (`container[index]`) is primarily available in containers that support random access, such as `vector` and `deque`. Iterators can be used with all container types, including associative containers (`set`, `map`) and sequence containers (`list`, `vector`, `deque`) that do not support direct indexing.
 
-- **Functionality**: Iterators can be more powerful than indices because they can be used not only to access elements but also to insert or delete elements within containers, often without invalidating the iterator or needing to update an index.
-
 Basic Example
 ```cpp
 #include <vector>

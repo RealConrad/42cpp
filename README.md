@@ -33,6 +33,7 @@ This repository serves as a personal roadmap through the fascinating world of C+
 - [Exceptions (Module05)](#exceptions-module05)
 - [Type casting (Module06)](#type-casting-module06)
 - [Templates (Module07)](#templates-module07)
+- [Templated containers, iterators, algorithms (Module08)](#templated-containers-iterators-algorithms-module08)
 - [General concepts](#general-concepts)
 
 # Classes, Member functions and other basics (Module00)
@@ -770,6 +771,66 @@ OUTPUT:
 98
 69.12
 Special Box for char: b
+```
+
+# Templated containers, iterators, algorithms (Module08)
+
+### What are containers
+Containers manage the storage space for their elements and provide member functions to access and manipulate them. These containers differ mainly in their memory layout, and how we can manipulate them. In C++98 there are a number of containers but the most common ones are:
+
+#### Sequence Containers:
+These are containers that implement data in such a way that they are accessible sequentially.
+- `vector`: Similar to an array that can change size dynmaically, Elements are stored contiguously, meaning they can be accessed by both iterators and offsets on pointers to elements (e.g. `myVector[i]`). Their memory reallocation for growing the size can be expensive if it happens frequently. Vectors are ideal for situations where random access to elements and frequent reading operations outweigh the need for frequent insertion and deletion in the middle of the container.
+- `list`: Implements a doubly-linked list. It allows for faster insertions/deletions from anywhere in the container. They lack access to their elements by index.
+- `deque`: Double-ended-queue, Similar to a vector but designed to allow faster insertions and deletions at the beginning/end of the sequence. This is sort of the middle ground between `vectors` and `lists`. It provides more efficient insertion/deletion while still allowing random access to elements.
+
+#### Associative Containers:
+Associative containers store elements formed by a combination of a key value and a mapped value: (e.g. give example)
+- `set`: A collection of unique keys, sorted by the keys. Typically would be useful to check for the existence of an element.
+- `multiset`: Similar to set, but keys can appear more than once.
+- `map`: A collection of key-value pairs, sorted by keys, where each key can appear only once. (e.g. a dictionary, the word is the `key` and `value` would be the definition of the `key/`/word.
+- `multimap`: Similar to map, but each key can be associated with multiple values.
+
+#### Container Adaptors
+Container adaptors provide a different interface for sequential containers.
+- `stack`: Adapts a container to provide stack (LIFO - Last In, First Out) operations.
+- `queue`: Adapts a container to provide queue (FIFO - First In, First Out) operations.
+
+### What are iterators
+They are a means to navigate through the elements of a container. An iterator is similar to a pointer in that it points to an element within a container and can move forward or backward (depending on the type of iterator) to access other elements. The primary purpose of iterators is to abstract the process of iterating (looping) over a container, making it possible to use a similar approach to access elements regardless of the underlying container type. For instance you cannot use indexing for `list` or `set` containers. This is useful when creating templates when you need to iterate over a container.
+
+### How they differ from indexing
+- **Abstraction**: Iterators abstract the way elements are accessed and manipulated. They can be used with any container type (e.g., `lists`, `sets`, `maps`, `vectors` etc..), including those that do not support direct access via indexing (like the `list` or `set`).
+
+- **Container Compatibility**: Direct indexing (`container[index]`) is primarily available in containers that support random access, such as `vector` and `deque`. Iterators can be used with all container types, including associative containers (`set`, `map`) and sequence containers (`list`, `vector`, `deque`) that do not support direct indexing.
+
+- **Functionality**: Iterators can be more powerful than indices because they can be used not only to access elements but also to insert or delete elements within containers, often without invalidating the iterator or needing to update an index.
+
+Example
+```cpp
+#include <vector>
+#include <iostream>
+
+int main() {
+    std::vector<int> vec = {10, 20, 30, 40};
+
+    // Accessing elements using indexing
+    for(size_t i = 0; i < vec.size(); ++i) {
+        std::cout << vec[i] << ' ';
+    }
+    std::cout << '\n';
+
+    // Accessing elements using iterators
+    for(std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+        std::cout << *it << ' ';
+    }
+    std::cout << '\n';
+
+    return 0;
+}
+
+OUTPUT:
+10 20 30 40
 ```
 
 

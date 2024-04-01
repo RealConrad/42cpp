@@ -778,6 +778,8 @@ Special Box for char: b
 ### What are containers
 Containers manage the storage space for their elements and provide member functions to access and manipulate them. These containers differ mainly in their memory layout, and how we can manipulate them. In C++98 there are a number of containers but the most common ones are:
 
+
+
 #### Sequence Containers:
 These are containers that implement data in such a way that they are accessible sequentially.
 - `vector`: Similar to an array that can change size dynmaically, Elements are stored contiguously, meaning they can be accessed by both iterators and offsets on pointers to elements (e.g. `myVector[i]`). Their memory reallocation for growing the size can be expensive if it happens frequently. Vectors are ideal for situations where random access to elements and frequent reading operations outweigh the need for frequent insertion and deletion in the middle of the container.
@@ -788,13 +790,81 @@ These are containers that implement data in such a way that they are accessible 
 Associative containers store elements formed by a combination of a key value and a mapped value: (e.g. give example)
 - `set`: A collection of unique keys, sorted by the keys. Typically would be useful to check for the existence of an element.
 - `multiset`: Similar to set, but keys can appear more than once.
-- `map`: A collection of key-value pairs, sorted by keys, where each key can appear only once. (e.g. a dictionary, the word is the `key` and `value` would be the definition of the `key/`/word.
+- `map`: A collection of key-value pairs, sorted by keys, where each key can appear only once. (e.g. a dictionary, the word is the `key` and `value` would be the definition of the `key`/word.
 - `multimap`: Similar to map, but each key can be associated with multiple values.
 
 #### Container Adaptors
 Container adaptors provide a different interface for sequential containers.
 - `stack`: Adapts a container to provide stack (LIFO - Last In, First Out) operations.
 - `queue`: Adapts a container to provide queue (FIFO - First In, First Out) operations.
+
+Example on how to template a container
+```cpp
+#include <iostream>
+#include <string>
+
+template<typename T, size_t N> // Template
+class FixedSizeArray {
+private:
+    T data[N]; // Array of type T with fixed size N
+    size_t size; // Current number of elements (not exceeding N)
+
+public:
+    FixedSizeArray() : size(0) {}
+
+    // Add an element to the container. If the container is full, the operation is ignored.
+    void add(const T& element) {
+        if (this->size < N) {
+            this->data[this->size_] = element;
+            this->size++;
+        } else {
+            // Handle the case when the array is full
+            std::cerr << "Error: Attempt to add to a full container." << std::endl;
+        }
+    }
+
+    // Access elements by index
+    T& operator[](size_t index) {
+	if (index < 0 || index > this->size) {
+	    std::cerr << "Error: Invalid Index." << std::endl;
+	    return;
+	}
+        return this->data[index];
+    }
+
+    // Returns the number of elements in the container
+    size_t getSize() const {
+        return this->size;
+    }
+};
+
+int main() {
+    // Example using int
+    FixedSizeArray<int, 5> intArray;
+    intArray.add(1);
+    intArray.add(2);
+
+    std::cout << "First element (int): " << intArray[0] << std::endl;
+    std::cout << "Second element (int): " << intArray[1] << std::endl;
+
+    // Example using std::string
+    FixedSizeArray<std::string, 5> stringArray;
+    stringArray.add("Hello");
+    stringArray.add("World");
+
+    std::cout << "First element (string): " << stringArray[0] << std::endl;
+    std::cout << "Second element (string): " << stringArray[1] << std::endl;
+
+    return 0;
+}
+
+OUTPUT:
+First Element (int): 1
+Second Element (int): 2
+
+First Element (string): Hello
+Second Element (string): World
+```
 
 ### What are iterators
 They are a means to navigate through the elements of a container. An iterator is similar to a pointer in that it points to an element within a container and can move forward or backward (depending on the type of iterator) to access other elements. The primary purpose of iterators is to abstract the process of iterating (looping) over a container, making it possible to use a similar approach to access elements regardless of the underlying container type. For instance you cannot use indexing for `list` or `set` containers. This is useful when creating templates when you need to iterate over a container.
@@ -806,7 +876,7 @@ They are a means to navigate through the elements of a container. An iterator is
 
 - **Functionality**: Iterators can be more powerful than indices because they can be used not only to access elements but also to insert or delete elements within containers, often without invalidating the iterator or needing to update an index.
 
-Example
+Basic Example
 ```cpp
 #include <vector>
 #include <iostream>

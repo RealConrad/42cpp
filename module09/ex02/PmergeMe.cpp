@@ -29,25 +29,10 @@ PmergeMe& PmergeMe::operator=(const PmergeMe& other) {
 
 PmergeMe::~PmergeMe() {}
 
-void PmergeMe::validateInput(int argc, char** argv) {
-   for (int i = 1; i < argc; i++) {
-		std::istringstream iss(argv[i]);
-		double num;
-		iss >> num;
-		if (iss.fail() || num < std::numeric_limits<int>::min() || num > std::numeric_limits<int>::max()) {
-			throw std::invalid_argument("Invalid input");
-		}
-		this->vectorData.push_back(static_cast<int>(num));
-		this->dequeData.push_back(static_cast<int>(num));
-	}
-}
-
 bool PmergeMe::comparePairsByFirst(const std::pair<int, int>& a, const std::pair<int, int>& b) {
 	return a.first < b.first;
 }
 
-/// @brief // J(n)=J(n−1)+2⋅J(n−2) with initial values of // J(0)=0 and J(1)=1
-/// @param numElements 
 void PmergeMe::initJacobsthal(size_t numElements) {
 	this->jacobsthalNumbers.clear();
 	this->jacobsthalNumbers.push_back(0); // J(0) = 0
@@ -63,16 +48,18 @@ void PmergeMe::initJacobsthal(size_t numElements) {
 	}
 }
 
-void PmergeMe::fordJohnsonSort() {
-	// vector
+void PmergeMe::fordJohnsonSort(int argc, char **argv) {
+	this->start = clock();
 	this->type = VECTOR;
-	this->start = clock();
+	validateInput(argc, argv, this->vectorData);
 	createAndSortPairs(this->vectorData, this->vectorPair);
-	splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);	
+	mergeSortPairs(this->vectorPair);
+	splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);
 
-	// deque
-	this->type = DEQUE;
 	this->start = clock();
+	this->type = DEQUE;
+	validateInput(argc, argv, this->dequeData);
 	createAndSortPairs(this->dequeData, this->dequePair);
+	mergeSortPairs(this->dequePair);
 	splitAndMerge<std::deque<int>, std::deque<std::pair<int, int> > >(this->dequePair);	
 }

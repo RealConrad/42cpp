@@ -9,8 +9,7 @@ int main(int argc, char **argv) {
 
 	try {
 		PmergeMe me;
-		me.validateInput(argc, argv);
-		me.fordJohnsonSort();
+		me.fordJohnsonSort(argc, argv);
 	} catch (const std::exception& e) {
 		std::cout << "Error: " << e.what() << std::endl;
 	}

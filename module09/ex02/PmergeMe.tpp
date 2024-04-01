@@ -31,6 +31,45 @@ void PmergeMe::printPairs(const Pair& pair) {
 	std::cout << std::endl;
 }
 
+template<typename Container>
+void PmergeMe::validateInput(int argc, char** argv, Container& container) {
+	for (int i = 1; i < argc; i++) {
+		std::istringstream iss(argv[i]);
+		double num;
+		iss >> num;
+		if (iss.fail() || num < std::numeric_limits<int>::min() || num > std::numeric_limits<int>::max()) {
+			throw std::invalid_argument("Invalid input");
+		}
+		container.push_back(static_cast<int>(num));
+	}
+	if (container.size() == 1 || std::is_sorted(container.begin(), container.end())) {
+		throw std::invalid_argument("Input is already sorted. Sorting not required.");
+	}
+}
+
+template<typename Container>
+void PmergeMe::printResult(const Container& container) {
+	double elapsedTime = 0;
+
+	elapsedTime = (static_cast<double>(end - start) / CLOCKS_PER_SEC) * 1000;
+	
+	if (this->type == VECTOR) {
+		std::cout << "===== VECTOR =====" << std::endl;
+		std::cout << "Before: ";
+		printContainer(this->vectorData);
+		std::cout << "After: ";
+		printContainer(container);
+		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " ms" << std::endl;
+	} else if (this->type == DEQUE) {
+		std::cout << "===== DEQUE =====" << std::endl;
+		std::cout << "Before: ";
+		printContainer(this->dequeData);
+		std::cout << "After: ";
+		printContainer(container);
+		std::cout << "Time to process a range of " << container.size() << " elements with std::deque: " << elapsedTime << " ms" << std::endl;
+	}
+}
+
 template <typename Container, typename Pair>
 void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 	this->hasOutlier = false;
@@ -56,10 +95,25 @@ void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 			iter++;
 		}
 	}
-	// Sort the pairs by the first element
-	std::sort(pair.begin(), pair.end(), comparePairsByFirst);
 }
 
+template<typename Pair>
+void PmergeMe::mergeSortPairs(Pair& pairs) {
+    if (pairs.size() <= 1)
+		return;
+
+	// Divide up to 2 halves
+	size_t mid = pairs.size() / 2;
+    Pair leftHalf(pairs.begin(), pairs.begin() + mid);
+    Pair rightHalf(pairs.begin() + mid, pairs.end());
+
+	// recursively sort
+    mergeSortPairs(leftHalf);
+    mergeSortPairs(rightHalf);
+
+	// merge once all sorted
+    std::merge(leftHalf.begin(), leftHalf.end(), rightHalf.begin(), rightHalf.end(), pairs.begin());
+}
 
 template<typename Container>
 void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
@@ -89,29 +143,6 @@ void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
 		typename Container::iterator insertPos = std::lower_bound(
 			mainChain.begin(), mainChain.end(), elementToInsert);
 		mainChain.insert(insertPos, elementToInsert);
-	}
-}
-
-template<typename Container>
-void PmergeMe::printResult(const Container& container) {
-	double elapsedTime = 0;
-
-	elapsedTime = (static_cast<double>(end - start) / CLOCKS_PER_SEC) * 1000;
-	
-	if (this->type == VECTOR) {
-		std::cout << "===== VECTOR =====" << std::endl;
-		std::cout << "Before: ";
-		printContainer(this->vectorData);
-		std::cout << "After: ";
-		printContainer(container);
-		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " ms" << std::endl;
-	} else if (this->type == DEQUE) {
-		std::cout << "===== DEQUE =====" << std::endl;
-		std::cout << "Before: ";
-		printContainer(this->dequeData);
-		std::cout << "After: ";
-		printContainer(container);
-		std::cout << "Time to process a range of " << container.size() << " elements with std::vector: " << elapsedTime << " ms" << std::endl;
 	}
 }
 

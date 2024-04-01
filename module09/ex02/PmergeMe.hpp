@@ -41,7 +41,12 @@ class PmergeMe {
 		
 		template <typename Container, typename PairContainer>
 		void splitAndMerge(const PairContainer& pairs);
+
+		template<typename Pair>
+		void mergeSortPairs(Pair& pairs);
 		
+		template <typename Container>
+		void validateInput(int argc, char** argv, Container& container);
 		template <typename Container>
 		void insertToMainChain(Container& mainChain, Container& pendChain);
 		template <typename Container>
@@ -58,8 +63,7 @@ class PmergeMe {
 		PmergeMe& operator=(const PmergeMe& other);
 		~PmergeMe();
 
-		void validateInput(int argc, char** argv);
-		void fordJohnsonSort();
+		void fordJohnsonSort(int argc, char **argv);
 };
 
 #include "PmergeMe.tpp"

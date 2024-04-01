@@ -21,10 +21,10 @@ void PmergeMe::printContainer(const Container& container) {
 
 template <typename Pair>
 void PmergeMe::printPairs(const Pair& pair) {
-    typename Pair::const_iterator iter;
-    for (iter = pair.begin(); iter != pair.end(); ++iter) {
-        std::cout << "(" << iter->first << ", " << iter->second << ") ";
-    }
+	typename Pair::const_iterator iter;
+	for (iter = pair.begin(); iter != pair.end(); ++iter) {
+		std::cout << "(" << iter->first << ", " << iter->second << ") ";
+	}
 	std::cout << std::endl;
 	if (this->hasOutlier)
 		std::cout << "Outlier: " << this->outlier;
@@ -34,69 +34,69 @@ void PmergeMe::printPairs(const Pair& pair) {
 template <typename Container, typename Pair>
 void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 	this->hasOutlier = false;
-    typename Container::iterator iter = container.begin();
-    while (iter != container.end()) {
+	typename Container::iterator iter = container.begin();
+	while (iter != container.end()) {
 		// Check we have at least two elements to form a pair
-        if (std::distance(iter, container.end()) >= 2) {
-            int first = *iter;
-            iter++;
-            int second = *iter;
-            iter++;
+		if (std::distance(iter, container.end()) >= 2) {
+			int first = *iter;
+			iter++;
+			int second = *iter;
+			iter++;
 
-            // Ensure the larger number is always first
-            if (first < second) {
-                std::swap(first, second);
-            }
-            // Add the pair to the container
-            pair.push_back(std::make_pair(first, second));
-        }
-        else {
-            this->outlier = *iter;
+			// Ensure the larger number is always first
+			if (first < second) {
+				std::swap(first, second);
+			}
+			// Add the pair to the container
+			pair.push_back(std::make_pair(first, second));
+		}
+		else {
+			this->outlier = *iter;
 			this->hasOutlier = true;
 			iter++;
-        }
-    }
-    // Sort the pairs by the first element
-    std::sort(pair.begin(), pair.end(), comparePairsByFirst);
+		}
+	}
+	// Sort the pairs by the first element
+	std::sort(pair.begin(), pair.end(), comparePairsByFirst);
 }
 
 
 template<typename Container>
 void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
-    // Ensure Jacobsthal sequence is large enough to include the potential outlier.
-    initJacobsthal(pendChain.size());
+	// Ensure Jacobsthal sequence is large enough to include the potential outlier.
+	initJacobsthal(pendChain.size());
 
-    // std::cout << "Jacobsthal Numbers: " << std::endl;
-    // printContainer(this->jacobsthalNumbers);
+	// std::cout << "Jacobsthal Numbers: " << std::endl;
+	// printContainer(this->jacobsthalNumbers);
 
-    int offset = 0;
-    int prev_jcb_number = -1;
+	int offset = 0;
+	int prev_jcb_number = -1;
 
-    for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
-        int jcb_number = jacobsthalNumbers[j] + 1;
+	for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
+		int jcb_number = jacobsthalNumbers[j] + 1;
 		std::cout << "JSCB NUM: " << jcb_number << std::endl;;
 
 		if (jcb_number > static_cast<int>(pendChain.size())) {
-            std::cout << "Breaking\tJCB_NUM\t" << jcb_number << "\t\tChain Size:\t" << pendChain.size() << std::endl;
+			std::cout << "Breaking\tJCB_NUM\t" << jcb_number << "\t\tChain Size:\t" << pendChain.size() << std::endl;
 			break;
-        }
+		}
 
-         for (int i = jcb_number; i > prev_jcb_number; i--) {
-            int elementToInsert = pendChain[i];
-            typename Container::iterator insertPos = std::lower_bound(
-                mainChain.begin(), mainChain.begin() + i + offset, elementToInsert);
-            // std::cout << "Inseting... " << elementToInsert << " at position " << insertPos - mainChain.begin() << std::endl;
-            mainChain.insert(insertPos, elementToInsert);
-            offset++;
-        }
-        prev_jcb_number = jcb_number;
-    }
+		 for (int i = jcb_number; i > prev_jcb_number; i--) {
+			int elementToInsert = pendChain[i];
+			typename Container::iterator insertPos = std::lower_bound(
+				mainChain.begin(), mainChain.begin() + i + offset, elementToInsert);
+			// std::cout << "Inseting... " << elementToInsert << " at position " << insertPos - mainChain.begin() << std::endl;
+			mainChain.insert(insertPos, elementToInsert);
+			offset++;
+		}
+		prev_jcb_number = jcb_number;
+	}
 	for (size_t i = prev_jcb_number + 1; i < pendChain.size(); i++) {
-        int elementToInsert = pendChain[i];
-        typename Container::iterator insertPos = std::lower_bound(
-            mainChain.begin(), mainChain.end(), elementToInsert);
-        mainChain.insert(insertPos, elementToInsert);
-    }
+		int elementToInsert = pendChain[i];
+		typename Container::iterator insertPos = std::lower_bound(
+			mainChain.begin(), mainChain.end(), elementToInsert);
+		mainChain.insert(insertPos, elementToInsert);
+	}
 }
 
 // template<typename Container>
@@ -146,26 +146,26 @@ void PmergeMe::printResult(const Container& container) {
 
 template <typename Container, typename PairContainer>
 void PmergeMe::splitAndMerge(const PairContainer& pairs) {
-    Container mainChain;
-    Container pendChain;
-    for (typename PairContainer::const_iterator it = pairs.begin(); it != pairs.end(); ++it) {
-        mainChain.push_back(it->first);
-        pendChain.push_back(it->second);
-    }
-    if (this->hasOutlier) {
-        pendChain.push_back(this->outlier);
-    }
+	Container mainChain;
+	Container pendChain;
+	for (typename PairContainer::const_iterator it = pairs.begin(); it != pairs.end(); ++it) {
+		mainChain.push_back(it->first);
+		pendChain.push_back(it->second);
+	}
+	if (this->hasOutlier) {
+		pendChain.push_back(this->outlier);
+	}
 	std::cout << "Pairs: " << std::endl;
 	printPairs(pairs);
-    std::cout << "First chain: ";
-    printContainer(mainChain);
-    std::cout << "Second chain: ";
-    printContainer(pendChain);
+	std::cout << "First chain: ";
+	printContainer(mainChain);
+	std::cout << "Second chain: ";
+	printContainer(pendChain);
 
-    insertToMainChain(mainChain, pendChain);
+	insertToMainChain(mainChain, pendChain);
 
-    std::cout << "Final Result: ";
-    printContainer(mainChain);
+	std::cout << "Final Result: ";
+	printContainer(mainChain);
 	this->end = clock();
 	// printResult(mainChain);
 }

@@ -14,14 +14,15 @@
 
 enum ContainerType {
 	VECTOR,
-	DEQUE
+	DEQUE,
+	UNKNOWN,
 };
 class PmergeMe {
 	private:
 		std::vector<int> vectorData;
 		std::deque<int> dequeData;
 		std::vector<std::pair<int, int> > vectorPair;
-    	std::deque<std::pair<int, int> > dequePair;
+		std::deque<std::pair<int, int> > dequePair;
 		std::vector<int> jacobsthalNumbers;
 		std::vector<size_t> insertionPositions;
 		int outlier;

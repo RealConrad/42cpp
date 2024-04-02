@@ -52,6 +52,8 @@ class PmergeMe {
 		template <typename Container>
 		void printResult(const Container& container);
 		
+		template <typename Container>
+		bool is_sorted(const Container& container);
 		// Debug
 		template <typename Pair>
 		void printPairs(const Pair& pair);

@@ -31,6 +31,26 @@ void PmergeMe::printPairs(const Pair& pair) {
 	std::cout << std::endl;
 }
 
+template <typename Container>
+bool PmergeMe::is_sorted(const Container& container) {
+    if (container.empty()) return true; // An empty container is considered sorted.
+
+    typename Container::const_iterator it = container.begin();
+    typename Container::const_iterator next = it;
+    ++next;
+
+    while (next != container.end()) {
+        if (*next < *it) {
+            return false;
+        }
+
+        ++it;
+        ++next;
+    }
+
+    return true; // Container is sorted.
+}
+
 template<typename Container>
 void PmergeMe::validateInput(int argc, char** argv, Container& container) {
 	for (int i = 1; i < argc; i++) {
@@ -42,7 +62,7 @@ void PmergeMe::validateInput(int argc, char** argv, Container& container) {
 		}
 		container.push_back(static_cast<int>(num));
 	}
-	if (container.size() == 1 || std::is_sorted(container.begin(), container.end())) {
+	if (is_sorted(container)) {
 		throw std::invalid_argument("Input is already sorted. Sorting not required.");
 	}
 }

@@ -62,7 +62,7 @@ void PmergeMe::validateInput(int argc, char** argv, Container& container) {
 		}
 		container.push_back(static_cast<int>(num));
 	}
-	if (is_sorted(container)) {
+	if (container.size() == 1 || is_sorted(container)) {
 		throw std::invalid_argument("Input is already sorted. Sorting not required.");
 	}
 }

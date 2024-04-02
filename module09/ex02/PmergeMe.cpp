@@ -49,12 +49,6 @@ void PmergeMe::initJacobsthal(size_t numElements) {
 }
 
 void PmergeMe::fordJohnsonSort(int argc, char **argv) {
-	this->start = clock();
-	this->type = VECTOR;
-	validateInput(argc, argv, this->vectorData);
-	createAndSortPairs(this->vectorData, this->vectorPair);
-	mergeSortPairs(this->vectorPair);
-	splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);
 
 	this->start = clock();
 	this->type = DEQUE;
@@ -62,4 +56,11 @@ void PmergeMe::fordJohnsonSort(int argc, char **argv) {
 	createAndSortPairs(this->dequeData, this->dequePair);
 	mergeSortPairs(this->dequePair);
 	splitAndMerge<std::deque<int>, std::deque<std::pair<int, int> > >(this->dequePair);	
+
+	this->start = clock();
+	this->type = VECTOR;
+	validateInput(argc, argv, this->vectorData);
+	createAndSortPairs(this->vectorData, this->vectorPair);
+	mergeSortPairs(this->vectorPair);
+	splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);
 }

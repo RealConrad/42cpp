@@ -968,10 +968,10 @@ void insertToMainChain(mainChain, pendChain) {
 **_NOTE:_** You could also potentially use a simple binary insertion algo instead of Jacobsthal to find the insertion position. According to the [wiki](#https://en.wikipedia.org/wiki/Merge-insertion_sort) page it does not mention Jacobsthal at all. However when referencing a few resources, they all use Jacobsthal which is why I decided to do the same.
 
 ## Resources
-- [Basic overview of Ford Johnson Algo](#https://link.springer.com/article/10.1007/s00224-020-09987-4)
-- [Wiki page on Ford Johnson Algo](#https://en.wikipedia.org/wiki/Merge-insertion_sort)
-- [Jacobsthal number sequence](#https://en.wikipedia.org/wiki/Jacobsthal_number)
-- [Good Ford johnson illustrations](#https://github.com/nerraou/Ford-Johnson-algorithm/tree/master)
+- [Basic overview of Ford Johnson Algo](https://link.springer.com/article/10.1007/s00224-020-09987-4)
+- [Wiki page on Ford Johnson Algo](https://en.wikipedia.org/wiki/Merge-insertion_sort)
+- [Jacobsthal number sequence](https://en.wikipedia.org/wiki/Jacobsthal_number)
+- [Good Ford johnson illustrations](https://github.com/nerraou/Ford-Johnson-algorithm/tree/master)
 
 # General Concepts
 ## Declaring functions as const

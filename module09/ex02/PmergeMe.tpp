@@ -93,27 +93,19 @@ void PmergeMe::printResult(const Container& container) {
 template <typename Container, typename Pair>
 void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 	this->hasOutlier = false;
-	typename Container::iterator iter = container.begin();
-	while (iter != container.end()) {
-		// Check we have at least two elements to form a pair
-		if (std::distance(iter, container.end()) >= 2) {
-			int first = *iter;
-			iter++;
-			int second = *iter;
-			iter++;
 
-			// Ensure the larger number is always first
-			if (first < second) {
-				std::swap(first, second);
-			}
-			// Add the pair to the container
+	for (size_t i = 0; i + 1 < container.size(); i += 2) {
+		int first = container[i];
+		int second = container[i + 1];
+		if (first < second) {
+			pair.push_back(std::make_pair(second, first));
+		} else {
 			pair.push_back(std::make_pair(first, second));
 		}
-		else {
-			this->outlier = *iter;
-			this->hasOutlier = true;
-			iter++;
-		}
+	}
+	if (container.size() % 2 != 0) {
+		this->hasOutlier = true;
+		this->outlier = container[container.size() - 1];
 	}
 }
 
@@ -137,33 +129,27 @@ void PmergeMe::mergeSortPairs(Pair& pairs) {
 
 template<typename Container>
 void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
-	initJacobsthal(pendChain.size());
+    initJacobsthal(pendChain.size());
 
-	int offset = 0;
-	int prev_jcb_number = -1;
+    int offset = 0;
+    int prev_jcb_number = -1;
 
-	for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
-		int jcb_number = jacobsthalNumbers[j] + 1;
+    for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
+        int jcb_number = jacobsthalNumbers[j] + 1;
 
-		if (jcb_number > static_cast<int>(pendChain.size())) {
-			break;
-		}
+		if (jcb_number > static_cast<int>(pendChain.size() - 1)) {
+     		jcb_number = pendChain.size() - 1;
+    	}
 
-		 for (int i = jcb_number; i > prev_jcb_number; i--) {
-			int elementToInsert = pendChain[i];
-			typename Container::iterator insertPos = std::lower_bound(
-				mainChain.begin(), mainChain.begin() + i + offset, elementToInsert);
-			mainChain.insert(insertPos, elementToInsert);
-			offset++;
-		}
-		prev_jcb_number = jcb_number;
-	}
-	for (size_t i = prev_jcb_number + 1; i < pendChain.size(); i++) {
-		int elementToInsert = pendChain[i];
-		typename Container::iterator insertPos = std::lower_bound(
-			mainChain.begin(), mainChain.end(), elementToInsert);
-		mainChain.insert(insertPos, elementToInsert);
-	}
+        for (int i = jcb_number; i > prev_jcb_number; --i) {
+            int elementToInsert = pendChain[i];
+            typename Container::iterator insertPos = std::lower_bound(
+                mainChain.begin(), mainChain.begin() + i + offset, elementToInsert);
+            mainChain.insert(insertPos, elementToInsert);
+            offset++;
+        }
+        prev_jcb_number = jcb_number;
+    }
 }
 
 template <typename Container, typename PairContainer>

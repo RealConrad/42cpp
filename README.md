@@ -669,7 +669,7 @@ int main() {
 ```
 
 # Templates (Module07)
-Templates allow use to write generic and reusable code. They allow us to define classes, functions, and methods that work with any data type.
+Templates allow us to write generic and reusable code. They allow us to define classes, functions, and methods that work with any data type.
 
 ### How Templates Work
 Templates work by allowing us to "parameterize" our code with one or more types. When you instantiate a template with a specific type, the compiler generates a new class/function from the template, replacing the template parameters with the actual type provided. This is called template instantiation.

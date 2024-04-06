@@ -33,22 +33,24 @@ void PmergeMe::printPairs(const Pair& pair) {
 
 template <typename Container>
 bool PmergeMe::is_sorted(const Container& container) {
-    if (container.empty()) return true; // An empty container is considered sorted.
+	if (container.empty()) return true; // An empty container is considered sorted.
 
-    typename Container::const_iterator it = container.begin();
-    typename Container::const_iterator next = it;
-    ++next;
+	typename Container::const_iterator it = container.begin();
+	typename Container::const_iterator next = it;
+	++next;
 
-    while (next != container.end()) {
-        if (*next < *it) {
-            return false;
-        }
+	while (next != container.end()) {
+		if (*next < *it) {
+			return false;
+		}
+		else if(*next == *it)
+			return false;
 
-        ++it;
-        ++next;
-    }
+		++it;
+		++next;
+	}
 
-    return true; // Container is sorted.
+	return true; // Container is sorted.
 }
 
 template<typename Container>
@@ -111,45 +113,45 @@ void PmergeMe::createAndSortPairs(Container& container, Pair& pair) {
 
 template<typename Pair>
 void PmergeMe::mergeSortPairs(Pair& pairs) {
-    if (pairs.size() <= 1)
+	if (pairs.size() <= 1)
 		return;
 
 	// Divide up to 2 halves
 	size_t mid = pairs.size() / 2;
-    Pair leftHalf(pairs.begin(), pairs.begin() + mid);
-    Pair rightHalf(pairs.begin() + mid, pairs.end());
+	Pair leftHalf(pairs.begin(), pairs.begin() + mid);
+	Pair rightHalf(pairs.begin() + mid, pairs.end());
 
 	// recursively sort
-    mergeSortPairs(leftHalf);
-    mergeSortPairs(rightHalf);
+	mergeSortPairs(leftHalf);
+	mergeSortPairs(rightHalf);
 
 	// merge once all sorted
-    std::merge(leftHalf.begin(), leftHalf.end(), rightHalf.begin(), rightHalf.end(), pairs.begin());
+	std::merge(leftHalf.begin(), leftHalf.end(), rightHalf.begin(), rightHalf.end(), pairs.begin());
 }
 
 template<typename Container>
 void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
-    initJacobsthal(pendChain.size());
+	initJacobsthal(pendChain.size());
 
-    int offset = 0;
-    int prev_jcb_number = -1;
+	int offset = 0;
+	int prev_jcb_number = -1;
 
-    for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
-        int jcb_number = jacobsthalNumbers[j] + 1;
+	for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
+		int jcb_number = jacobsthalNumbers[j] + 1;
 
 		if (jcb_number > static_cast<int>(pendChain.size() - 1)) {
-     		jcb_number = pendChain.size() - 1;
-    	}
+	 		jcb_number = pendChain.size() - 1;
+		}
 
-        for (int i = jcb_number; i > prev_jcb_number; --i) {
-            int elementToInsert = pendChain[i];
-            typename Container::iterator insertPos = std::lower_bound(
-                mainChain.begin(), mainChain.begin() + i + offset, elementToInsert);
-            mainChain.insert(insertPos, elementToInsert);
-            offset++;
-        }
-        prev_jcb_number = jcb_number;
-    }
+		for (int i = jcb_number; i > prev_jcb_number; --i) {
+			int elementToInsert = pendChain[i];
+			typename Container::iterator insertPos = std::lower_bound(
+				mainChain.begin(), mainChain.begin() + i + offset, elementToInsert);
+			mainChain.insert(insertPos, elementToInsert);
+			offset++;
+		}
+		prev_jcb_number = jcb_number;
+	}
 }
 
 template <typename Container, typename PairContainer>
@@ -164,6 +166,8 @@ void PmergeMe::splitAndMerge(const PairContainer& pairs) {
 		pendChain.push_back(this->outlier);
 	}
 	insertToMainChain(mainChain, pendChain);
+	if (!is_sorted(mainChain))
+		throw std::runtime_error("Duplicates found");
 	this->end = clock();
 	printResult(mainChain);
 }

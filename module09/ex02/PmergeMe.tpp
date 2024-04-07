@@ -33,7 +33,8 @@ void PmergeMe::printPairs(const Pair& pair) {
 
 template <typename Container>
 bool PmergeMe::is_sorted(const Container& container) {
-	if (container.empty()) return true; // An empty container is considered sorted.
+	if (container.empty())
+		return true; // An empty container is considered sorted.
 
 	typename Container::const_iterator it = container.begin();
 	typename Container::const_iterator next = it;
@@ -43,9 +44,6 @@ bool PmergeMe::is_sorted(const Container& container) {
 		if (*next < *it) {
 			return false;
 		}
-		else if(*next == *it)
-			return false;
-
 		++it;
 		++next;
 	}
@@ -131,18 +129,15 @@ void PmergeMe::mergeSortPairs(Pair& pairs) {
 
 template<typename Container>
 void PmergeMe::insertToMainChain(Container& mainChain, Container& pendChain) {
-	initJacobsthal(pendChain.size());
-
 	int offset = 0;
 	int prev_jcb_number = -1;
 
-	for (size_t j = 0; j < jacobsthalNumbers.size(); j++) {
-		int jcb_number = jacobsthalNumbers[j] + 1;
+	for (size_t j = 2; j < jacobsthalNumbers.size(); j++) {
+		int jcb_number = jacobsthalNumbers[j];
 
 		if (jcb_number > static_cast<int>(pendChain.size() - 1)) {
 	 		jcb_number = pendChain.size() - 1;
 		}
-
 		for (int i = jcb_number; i > prev_jcb_number; --i) {
 			int elementToInsert = pendChain[i];
 			typename Container::iterator insertPos = std::lower_bound(
@@ -166,8 +161,7 @@ void PmergeMe::splitAndMerge(const PairContainer& pairs) {
 		pendChain.push_back(this->outlier);
 	}
 	insertToMainChain(mainChain, pendChain);
-	if (!is_sorted(mainChain))
-		throw std::runtime_error("Duplicates found");
+	// throw std::runtime_error("EXIT");
 	this->end = clock();
 	printResult(mainChain);
 }

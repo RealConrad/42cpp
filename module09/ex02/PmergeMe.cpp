@@ -61,7 +61,7 @@ void PmergeMe::fordJohnsonSort(int argc, char **argv) {
 	validateInput(argc, argv, this->vectorData);
 	createAndSortPairs(this->vectorData, this->vectorPair);
 	mergeSortPairs(this->vectorPair);
-	initJacobsthal(this->dequeData.size());
+	initJacobsthal(this->vectorData.size());
 	splitAndMerge<std::vector<int>, std::vector<std::pair<int, int> > >(this->vectorPair);
 }
   

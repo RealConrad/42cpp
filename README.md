@@ -923,14 +923,12 @@ secondChain = 30 28 41 16 45
 4. **Generate Jacobsthal number sequence**: [Generate Jacobsthal](#https://en.wikipedia.org/wiki/Jacobsthal_number) based on `secondChain.size()`. Make sure to not generate numbers higher than the `secondChain.size()`. So it would look something like:
 ```cpp
 // PSEUDO CODE:
-generateJacobsthalNumbers() {
+generateJacobsthalNumbers(numElements) {
+	maxSize = numElements / 2 + 1
 	// Init first values for Jacobsthal number sequence before loop
-	while (condition) {
-		nextNumber = JACOBSTHAL_FORMULA;
-		if (nextNumber > secondChain.size())
-			// stop generating
-		else
-			// else add to a container
+	while (this->jacobsthal.back() < maxSize) {
+		// calculate jacobsthal
+		// add to a container
 	}
 }
 ```
@@ -941,19 +939,16 @@ For each Jacobsthal number, it inserts elements from `pendChain` into `mainChain
 ```cpp
 // PSEUDO CODE FROM MY SOLUTION:
 void insertToMainChain(mainChain, pendChain) {
-
-    Initialize Jacobsthal numbers for the size of pendChain
-    
     var offset
     var prev_jcb_numbers
     
     For each jacobsthalNumber in jacobsthalNumbers
-        Calculate jcb_number as jacobsthalNumber + 1
+        Calculate jcb_number as jacobsthalNumber
         
-        If jcb_number is greater than the size of pendChain
-            Exit
+        If jcb_number is greater than the size of pendChain - 1
+            jcb_number = pendChain.size() - 1
         
-        For i from jcb_number down to prev_jcb_number + 1
+        For i from jcb_number down to prev_jcb_number
             Get ElementToInsert
             Find insertPos in mainChain
             Insert elementToInsert into mainChain at insertPos + offset + i

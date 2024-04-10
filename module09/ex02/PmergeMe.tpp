@@ -161,7 +161,6 @@ void PmergeMe::splitAndMerge(const PairContainer& pairs) {
 		pendChain.push_back(this->outlier);
 	}
 	insertToMainChain(mainChain, pendChain);
-	// throw std::runtime_error("EXIT");
 	this->end = clock();
 	printResult(mainChain);
 }

@@ -97,11 +97,40 @@ bool BitcoinExchange::isValidDate(const std::string& date) {
 	return true;
 }
 
+bool BitcoinExchange::isValidNumberString(const std::string& str) {
+	bool decimalFound = false;
+	bool digitFound = false;
+
+	for (size_t i = 0; i < str.length(); ++i) {
+		if (str[i] == '.') {
+			if (decimalFound)
+				return false;
+			decimalFound = true;
+		} else if (std::isdigit(str[i]) || str[0] == '-') {
+			digitFound = true;
+		} else {
+			return false;
+		}
+	}
+
+	return digitFound;
+}
+
+
 valueType BitcoinExchange::isValidValue(const std::string& rateStr) {
-	std::istringstream iss(trim(rateStr));
+	std::string trimmedRateStr = trim(rateStr);
+	
+	if (!trimmedRateStr.empty() && (trimmedRateStr.back() == 'f' || trimmedRateStr.back() == 'F')) {
+		trimmedRateStr.pop_back();
+	}
+	if (!isValidNumberString(trimmedRateStr) || trimmedRateStr.empty()) {
+		return ERR_NAN;
+	}
+
+	std::istringstream iss(trimmedRateStr);
 	double rate;
 	iss >> rate;
-	if (iss.fail())
+	if (iss.fail() && !iss.eof())
 		return ERR_NAN;
 	if (rate < 0)
 		return ERR_NEGATIVE;

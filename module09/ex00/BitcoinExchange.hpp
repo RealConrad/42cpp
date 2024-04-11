@@ -31,6 +31,7 @@ class BitcoinExchange {
 		void loadPricesFromFile(const std::string& filename);
 		void calculateValue(const std::string& filename);
 		std::map<std::string, double>& getPrices();
+		bool isValidNumberString(const std::string& str);
 };
 
 #endif

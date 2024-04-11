@@ -45,9 +45,11 @@ void RPN::performOperations(char operation) {
 }
 
 void RPN::executeExpression(const std::string& expr) {
-	bool last_char = true;
+	if (expr.empty())
+		throw std::invalid_argument("Cannot operate on empty string");
 
-	for (size_t i = 0; i < expr.size(); ++i) {
+	bool last_char = true;
+	for (size_t i = 0; i < expr.size(); i++) {
 		char ch = expr[i];
 		if (std::isspace(static_cast<unsigned char>(ch)))
 		{	
@@ -66,6 +68,9 @@ void RPN::executeExpression(const std::string& expr) {
 		} else {
 			performOperations(ch);
 		}
+	}
+	if (stack.empty()) {
+		throw std::invalid_argument("Stack is empty");
 	}
 
 	if (stack.size() > 1)

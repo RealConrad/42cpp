@@ -914,13 +914,18 @@ For example purposes I use the numbers: `30 42 28 67 75 41 49 16 45`
 (42, 30) (67, 28) (75, 41) (49, 16) 45 (45=remainder)
 ```
 
-3. **Split the pairs:** Here we will split the `pairs` into 2 different containers, the `mainChain` which contains the `pair->first` values and `pendchain` which contains the `pair->second`. We can add the `remainder` to the `secondChain`. So our numbers would look like this:
+3. **Sort the pairs using merge sort:** We sort the pairs based on the `largerNum`. So our pairs would now look like this:
 ```
-mainChain = 42 67 75 49
-secondChain = 30 28 41 16 45
+(42, 30) (49, 16) (67, 28) (75, 41) 45 (45=remainder)
 ```
 
-4. **Generate Jacobsthal number sequence**: [Generate Jacobsthal](#https://en.wikipedia.org/wiki/Jacobsthal_number) based on `secondChain.size()`. Make sure to not generate numbers higher than the `secondChain.size()`. So it would look something like:
+4. **Split the pairs:** Here we will split the `pairs` into 2 different containers, the `mainChain` which contains the `pair->first` values and `pendchain` which contains the `pair->second`. We can add the `remainder` to the `secondChain`. So our numbers would look like this:
+```
+mainChain = 42 49 67 75
+secondChain = 30 16 28 41 45
+```
+
+5. **Generate Jacobsthal number sequence**: [Generate Jacobsthal](#https://en.wikipedia.org/wiki/Jacobsthal_number) based on `secondChain.size()`. Make sure to not generate numbers higher than the `secondChain.size()`. So it would look something like:
 ```cpp
 // PSEUDO CODE:
 generateJacobsthalNumbers(numElements) {
@@ -933,7 +938,7 @@ generateJacobsthalNumbers(numElements) {
 }
 ```
 
-5. **Find insertion based on Jacobsthal numbers**: Based on the numbers generated, you can use it to determine the order of insertion for `secondChain` into `mainchain`. Make sure you catch ALL numbers inside `secondChain`. The Jacobsthal numbers are utilized in the sorting algorithm to efficiently determine the optimal insertion points for merging elements from a pending chain (`pendChain`) into a main chain (`mainChain`), while maintaining the sorted order. This method leverages the unique properties of Jacobsthal numbers to minimize the number of comparisons needed during the insertion process. Specifically, by calculating and following the pattern provided by these numbers, the algorithm optimizes the positions where elements should be inserted into the main chain. This results in a more efficient sorting process, as it reduces the computational overhead associated with finding the correct insertion points in a sorted sequence, especially compared to a straightforward linear search or unoptimized insertion strategy. \
+6. **Find insertion based on Jacobsthal numbers**: Based on the numbers generated, you can use it to determine the order of insertion for `secondChain` into `mainchain`. Make sure you catch ALL numbers inside `secondChain`. The Jacobsthal numbers are utilized in the sorting algorithm to efficiently determine the optimal insertion points for merging elements from a pending chain (`pendChain`) into a main chain (`mainChain`), while maintaining the sorted order. This method leverages the unique properties of Jacobsthal numbers to minimize the number of comparisons needed during the insertion process. Specifically, by calculating and following the pattern provided by these numbers, the algorithm optimizes the positions where elements should be inserted into the main chain. This results in a more efficient sorting process, as it reduces the computational overhead associated with finding the correct insertion points in a sorted sequence, especially compared to a straightforward linear search or unoptimized insertion strategy. \
 **So Essentially:**
 For each Jacobsthal number, it inserts elements from `pendChain` into `mainChain` at positions determined by the current Jacobsthal number, adjusted by the `offset`. The insertion positions are found using `std::lower_bound`, which performs a binary search to find the correct spot efficiently.
 ```cpp

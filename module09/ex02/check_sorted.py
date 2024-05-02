@@ -43,3 +43,5 @@ if __name__ == "__main__":
 
         result = is_sorted_ascending(numbers)
         print(result)
+    else:
+        print("Please provide numbers as arguments, either in a single string or as separate arguments.")

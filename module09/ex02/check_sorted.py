@@ -16,7 +16,6 @@ def is_sorted_ascending(numbers):
         # Check if the current number is greater than the next one
         if numbers[i] > numbers[i + 1]:
             is_sorted = False
-        # Continue checking the entire list without breaking the loop
 
     # The last number needs to be checked for duplicates as it's not covered in the loop
     if numbers[-1] in unique_numbers:

@@ -919,7 +919,7 @@ For example purposes I use the numbers: `30 42 28 67 75 41 49 16 45`
 (42, 30) (49, 16) (67, 28) (75, 41) 45 (45=remainder)
 ```
 
-4. **Split the pairs:** Here we will split the `pairs` into 2 different containers, the `mainChain` which contains the `pair->first` values and `pendchain` which contains the `pair->second`. We can add the `remainder` to the `secondChain`. So our numbers would look like this:
+4. **Split the pairs:** Here we will split the `pairs` into 2 different containers, the `mainChain` which contains the `pair->first` values and `pendchain` which contains the `pair->second`. We can add the `remainder` to the `pendChain`. So our numbers would look like this:
 ```
 mainChain = 42 49 67 75
 secondChain = 30 16 28 41 45
